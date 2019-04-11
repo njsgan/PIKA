@@ -1,4 +1,4 @@
-# ![Image](pikasmall.png) PiKA
+# ![Image](pikasmall.png)
 <br/>
 
 ## Mengapa PiKA?
