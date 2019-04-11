@@ -20,6 +20,7 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
@@ -85,6 +86,7 @@ public class Login {
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setUndecorated(true);
 		frame.setBounds(100, 100, 450, 217);
+		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -109,6 +111,7 @@ public class Login {
 			public void actionPerformed(ActionEvent e) {
 				String password = txtPassword.getText();
 				String username = txtUsername.getText();
+				
 				try {
 				User loggedIn = DBConn.login(username, password);
 				if(loggedIn instanceof UserCashier ) UserAction((UserCashier)loggedIn);

@@ -148,6 +148,7 @@ public class Cashier extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 		
 		JLabel lblCashier = new JLabel("Cashier :");
 		lblCashier.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
