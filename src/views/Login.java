@@ -18,6 +18,8 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
+import javax.swing.ImageIcon;
+import java.awt.Color;
 
 public class Login {
 
@@ -53,31 +55,28 @@ public class Login {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setUndecorated(true);
-		frame.setBounds(100, 100, 450, 200);
+		frame.setBounds(100, 100, 450, 217);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblLogin = new JLabel("LOGIN");
-		lblLogin.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLogin.setFont(new Font("Bebas Neue", Font.PLAIN, 18));
-		lblLogin.setBounds(173, 34, 89, 14);
-		frame.getContentPane().add(lblLogin);
-		
 		JLabel lblNewLabel = new JLabel("Username");
-		lblNewLabel.setBounds(47, 73, 64, 14);
+		lblNewLabel.setBounds(47, 83, 64, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Password");
-		lblNewLabel_1.setBounds(47, 104, 64, 14);
+		lblNewLabel_1.setBounds(47, 121, 64, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		txtUsername = new JTextField();
-		txtUsername.setBounds(121, 70, 266, 20);
+		txtUsername.setBounds(121, 80, 283, 20);
 		frame.getContentPane().add(txtUsername);
 		txtUsername.setColumns(10);
 		
-		JButton btnSubmit = new JButton("SUBMIT");
+		JButton btnSubmit = new JButton("Login");
+		btnSubmit.setBackground(Color.DARK_GRAY);
+		btnSubmit.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String password = txtPassword.getText();
@@ -109,15 +108,20 @@ public class Login {
 				}
 			}
 		});
-		btnSubmit.setBounds(173, 150, 89, 23);
+		btnSubmit.setBounds(47, 167, 357, 39);
 		frame.getContentPane().add(btnSubmit);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(47, 139, 340, 10);
+		separator.setBounds(47, 146, 357, 10);
 		frame.getContentPane().add(separator);
 		
 		txtPassword = new JPasswordField();
-		txtPassword.setBounds(121, 101, 266, 20);
+		txtPassword.setBounds(121, 118, 283, 20);
 		frame.getContentPane().add(txtPassword);
+		
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setIcon(new ImageIcon(Login.class.getResource("/views/pika10025.png")));
+		lblNewLabel_2.setBounds(165, 11, 125, 60);
+		frame.getContentPane().add(lblNewLabel_2);
 	}
 }
