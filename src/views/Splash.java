@@ -49,7 +49,6 @@ public class Splash {
 		frmPika.setUndecorated(true);
 		frmPika.setBackground(new Color(255, 255, 255, 0));
 		frmPika.setResizable(false);
-		frmPika.setType(Type.UTILITY);
 		frmPika.setTitle("PiKA");
 		frmPika.setBounds(100, 100, 450, 300);
 		frmPika.setLocationRelativeTo(null);
