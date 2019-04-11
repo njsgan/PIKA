@@ -5,13 +5,49 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import assets.User;
+
 public class DBConn {
+	
+	public static User login(String username, String password) {
+		try {
+			//create connection
+			String myDriver = "com.mysql.jdbc.Driver";
+		    String myUrl = "jdbc:mysql://localhost/PIKA";
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    //query
+		    String query = "SELECT * FROM user where user.username = username and user.password = password";
+		    
+		    Statement st = conn.createStatement();
+		    ResultSet rs = st.executeQuery(query);
+		    String name;
+		    String user_name;
+		    String pass_word;
+		    String address;
+		    Integer age;
+		    Integer status;
+		    String telephone;
+		    while(rs.next()) {
+		    	name = rs.getString("name");
+		    	user_name = rs.getString("username");
+		    	pass_word = rs.getString("password");
+		    	address = rs.getString("address");
+		    	age = rs.getInt("age");
+		    	status = rs.getInt("status");
+		    	telephone = rs.getString("telephone");
+		    }
+		    return new User(name, address, telephone, age, status, user_name, pass_word);
+		}
+		return null;
+	}
 
 	public DBConn() {
 		 try
 		    {
 		      // create our mysql database connection
-		    	String myDriver = "com.mysql.jdbc.Driver";
+			  String myDriver = "com.mysql.jdbc.Driver";
 		      String myUrl = "jdbc:mysql://localhost/PIKA";
 		      Class.forName(myDriver);
 		      Connection conn = DriverManager.getConnection(myUrl, "root", "");
