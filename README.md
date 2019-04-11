@@ -1,4 +1,6 @@
-# ![Image](pikasmall.png)
+<p align="center">
+  <img width="400" height="400" src="Pika_POS.png">
+</p>
 <br/>
 
 ## Mengapa PiKA?

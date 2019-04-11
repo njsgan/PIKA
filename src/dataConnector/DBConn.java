@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import assets.User;
+import assets.UserCashier;
 
 public class DBConn {
 	
@@ -13,32 +14,30 @@ public class DBConn {
 		try {
 			//create connection
 			String myDriver = "com.mysql.jdbc.Driver";
-		    String myUrl = "jdbc:mysql://localhost/PIKA";
+		    String myUrl = "jdbc:mysql://localhost/pikapos";
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		    
 		    //query
-		    String query = "SELECT * FROM user where user.username = username and user.password = password";
+		    String query = "SELECT * FROM users where username = '"+username+"' and password = '"+password+"'";
 		    
 		    Statement st = conn.createStatement();
 		    ResultSet rs = st.executeQuery(query);
-		    String name;
-		    String user_name;
-		    String pass_word;
-		    String address;
-		    Integer age;
-		    Integer status;
-		    String telephone;
-		    while(rs.next()) {
-		    	name = rs.getString("name");
-		    	user_name = rs.getString("username");
-		    	pass_word = rs.getString("password");
-		    	address = rs.getString("address");
-		    	age = rs.getInt("age");
-		    	status = rs.getInt("status");
-		    	telephone = rs.getString("telephone");
+		    while (rs.next()) {
+		    	String fname = rs.getString("fname");
+		    	String lname = rs.getString("lname");
+		    	String user_name = rs.getString("username");
+		    	String pass_word = rs.getString("password");
+		    	String address = rs.getString("address");
+		    	String phone = rs.getString("phone");
+		    	Integer age = rs.getInt("age");
+		    	Integer status = rs.getInt("status");
+		    	if(status == 1) return new UserCashier(fname, lname, address, phone, age, status, user_name, pass_word);
 		    }
-		    return new User(name, address, telephone, age, status, user_name, pass_word);
+		    return null;
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
 		}
 		return null;
 	}
