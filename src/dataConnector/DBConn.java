@@ -1,0 +1,52 @@
+package dataConnector;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class DBConn {
+
+	public DBConn() {
+		 try
+		    {
+		      // create our mysql database connection
+		    	String myDriver = "com.mysql.jdbc.Driver";
+		      String myUrl = "jdbc:mysql://localhost/PIKA";
+		      Class.forName(myDriver);
+		      Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		      
+		      // our SQL SELECT query. 
+		      // if you only need a few columns, specify them by name instead of using "*"
+		      String query = "SELECT * FROM rumah";
+		      
+		      // create the java statement
+		      Statement st = conn.createStatement();
+		      
+//		      UNTUK INSERT
+//		      st.executeUpdate("INSERT INTO rumah (kode, alamat) VALUES ('DOG-123','Jl. Alam Sungai Anjing no. 26')");
+		      
+		      // execute the query, and get a java resultset
+		      ResultSet rs = st.executeQuery(query);
+		      
+		      // iterate through the java resultset
+		      while (rs.next())
+		      {
+		        int id = rs.getInt("id");
+		        String nama = rs.getString("kode");
+		        String username = rs.getString("alamat");
+
+		        
+		        // print the results
+		        System.out.format("%d, %s, %s\n", id, nama, username);
+		      }
+		      st.close();
+		    }
+		    catch (Exception e)
+		    {
+		      System.err.println("Got an exception! ");
+		      System.err.println(e.getMessage());
+		    }
+	}
+
+}
