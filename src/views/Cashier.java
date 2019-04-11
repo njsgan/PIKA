@@ -47,7 +47,6 @@ public class Cashier extends JFrame {
 	private JTextField txtQty;
 	private JLabel lblTotalBottom;
 	
-	private ArrayList<Items> items = new ArrayList<Items>();
 	private ArrayList<Purchase> purchases = new ArrayList<Purchase>();
 
 	/**
@@ -70,10 +69,31 @@ public class Cashier extends JFrame {
 	 * Create the frame.
 	 */
 	
-	private void AddItems() {
-		items.add(new Items("123", "Item 1", 50000, 50));
-		items.add(new Items("234", "Item 2", 50000, 50));
-		items.add(new Items("345", "Item 3", 50000, 50));
+//	private void AddItems() {
+//		items.add(new Items("123", "Item 1", 50000, 50));
+//		items.add(new Items("234", "Item 2", 50000, 50));
+//		items.add(new Items("345", "Item 3", 50000, 50));
+//	}
+	
+	private void UpdateList() {
+		String col[] = {"Code", "Name", "Price", "Stock"};
+		DefaultTableModel tableModel = new DefaultTableModel(col, 0) {
+			public boolean isCellEditable(int row, int column)
+		    {
+		      return false;//This causes all cells to be not editable
+		    }
+		};
+		itemList = new JTable();
+		itemList.setModel(tableModel);
+		//adding items :)
+		for(Items item : Container.items) {
+			String code = item.getCode();
+			String name = item.getName();
+			Integer price = item.getPrice();
+			Integer stock = item.getStock();
+			Object[] obj = {code, name, price, stock};
+			tableModel.addRow(obj);
+		}
 	}
 	
 	private void AddPurchase(Items item, Integer qty) {
@@ -90,7 +110,12 @@ public class Cashier extends JFrame {
 	
 	private void UpdatePurchaseList() {
 		String colP[] = {"Name", "Price", "Qty"};
-		DefaultTableModel purchaseModel = new DefaultTableModel(colP, 0);
+		DefaultTableModel purchaseModel = new DefaultTableModel(colP, 0) {
+			public boolean isCellEditable(int row, int column)
+		    {
+		      return false;//This causes all cells to be not editable
+		    }
+		};
 		purchasesList.setModel(purchaseModel);
 		for(Purchase purchase : purchases) {
 			String name = purchase.getItem().getName();
@@ -102,7 +127,7 @@ public class Cashier extends JFrame {
 	}
 	
 	private Items findItem(String code) {
-		for(Items item : items) {
+		for(Items item : Container.items) {
 			if(item.getCode().equals(code)) return item;
 		}
 		return null;
@@ -117,7 +142,6 @@ public class Cashier extends JFrame {
 	public Cashier(UserCashier cashier) {
 		setResizable(false);
 		setTitle("PiKA Point-of-Sales");
-		AddItems();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 816, 600);
 		contentPane = new JPanel();
@@ -158,16 +182,7 @@ public class Cashier extends JFrame {
 		String col[] = {"Code", "Name", "Price", "Stock"};
 		DefaultTableModel tableModel = new DefaultTableModel(col, 0);
 		itemList = new JTable();
-		itemList.setModel(tableModel);
-		//adding items :)
-		for(Items item : items) {
-			String code = item.getCode();
-			String name = item.getName();
-			Integer price = item.getPrice();
-			Integer stock = item.getStock();
-			Object[] obj = {code, name, price, stock};
-			tableModel.addRow(obj);
-		}
+		UpdateList();
 		scrollPane.setViewportView(itemList);
 		//selection
 		//single selection
@@ -350,6 +365,7 @@ public class Cashier extends JFrame {
 					Container.transactions.add(new Transaction("abc123", purchases, cashier));
 					purchases.clear();
 					UpdatePurchaseList();
+					UpdateList();
 					SetTotal();
 				}
 			}

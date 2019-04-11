@@ -8,6 +8,9 @@ import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+
+import dataConnector.DBConn;
+
 import java.awt.Window.Type;
 import java.util.concurrent.TimeUnit;
 import java.awt.Color;
@@ -38,6 +41,7 @@ public class Splash {
 	 * Create the application.
 	 */
 	public Splash() {
+		DBConn.addItems();
 		initialize();
 	}
 

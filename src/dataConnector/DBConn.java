@@ -5,8 +5,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import assets.Items;
 import assets.User;
 import assets.UserCashier;
+import dataContainer.Container;
 
 public class DBConn {
 	
@@ -40,6 +42,34 @@ public class DBConn {
 		    System.err.println(e.getMessage());
 		}
 		return null;
+	}
+	
+	public static void addItems() {
+		try {
+			//create connection
+			String myDriver = "com.mysql.jdbc.Driver";
+		    String myUrl = "jdbc:mysql://localhost/pikapos";
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    //query
+		    String query = "SELECT * FROM items ";
+		    
+		    Statement st = conn.createStatement();
+		    ResultSet rs = st.executeQuery(query);
+		    while(rs.next()) {
+		    	String code = rs.getString("code");
+		    	String name = rs.getString("name");
+		    	Integer price = rs.getInt("price");
+		    	Integer stock = rs.getInt("stock");
+		    	Container.items.add(new Items(code, name, price, stock));
+		    	System.out.println(name);
+		    }
+		    
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
 	}
 
 	public DBConn() {
