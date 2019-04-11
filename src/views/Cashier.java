@@ -156,7 +156,7 @@ public class Cashier extends JFrame {
 		
 		JLabel lblName = new JLabel(cashier.getFname());
 		lblName.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		lblName.setBounds(112, 82, 88, 21);
+		lblName.setBounds(112, 82, 178, 21);
 		contentPane.add(lblName);
 		
 		JSeparator separator = new JSeparator();
@@ -206,52 +206,54 @@ public class Cashier extends JFrame {
 		
 		JLabel lblTotal_1 = new JLabel("Total");
 		lblTotal_1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblTotal_1.setBounds(414, 452, 72, 20);
+		lblTotal_1.setBounds(414, 465, 72, 20);
 		contentPane.add(lblTotal_1);
 		
 		JLabel lblPay = new JLabel("Pay");
 		lblPay.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblPay.setBounds(414, 483, 46, 20);
+		lblPay.setBounds(414, 496, 46, 20);
 		contentPane.add(lblPay);
 		
 		textField_1 = new JTextField();
 		textField_1.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		textField_1.setBounds(520, 487, 105, 20);
+		textField_1.setBounds(520, 500, 105, 20);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
 		JLabel lblReturn = new JLabel("Return");
 		lblReturn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblReturn.setBounds(414, 514, 64, 23);
+		lblReturn.setBounds(414, 527, 64, 23);
 		contentPane.add(lblReturn);
 		
-		lblTotalBottom = new JLabel("Rp. xxxx");
+		lblTotalBottom = new JLabel("Rp. 0");
 		lblTotalBottom.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblTotalBottom.setBounds(480, 452, 88, 20);
+		lblTotalBottom.setBounds(480, 465, 88, 20);
 		contentPane.add(lblTotalBottom);
 		
-		JLabel lblReturnValue = new JLabel("Rp. xxxx");
+		JLabel lblReturnValue = new JLabel("Rp. 0");
 		lblReturnValue.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblReturnValue.setBounds(479, 514, 72, 23);
+		lblReturnValue.setBounds(479, 527, 72, 23);
 		contentPane.add(lblReturnValue);
 		
 		JLabel lblQty = new JLabel("Qty   :");
-		lblQty.setFont(new Font("Segoe UI", Font.PLAIN, 34));
-		lblQty.setBounds(10, 507, 88, 48);
+		lblQty.setFont(new Font("Segoe UI", Font.PLAIN, 30));
+		lblQty.setBounds(10, 505, 88, 48);
 		contentPane.add(lblQty);
 		
 		txtQty = new JTextField();
-		txtQty.setFont(new Font("Segoe UI", Font.PLAIN, 34));
+		txtQty.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		txtQty.setText("1");
-		txtQty.setBounds(114, 511, 86, 39);
+		txtQty.setBounds(114, 511, 105, 39);
 		contentPane.add(txtQty);
 		txtQty.setColumns(10);
 		
 		
 		JButton btnAdd = new JButton("Add to Cart");
-		btnAdd.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		btnAdd.setForeground(new Color(102, 255, 255));
+		btnAdd.setBackground(new Color(0, 0, 102));
+		btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		
-		btnAdd.setBounds(240, 503, 135, 48);
+		btnAdd.setBounds(240, 467, 135, 84);
 		contentPane.add(btnAdd);
 		
 		JButton btnRemove = new JButton("Remove");
@@ -261,19 +263,16 @@ public class Cashier extends JFrame {
 		contentPane.add(btnRemove);
 		
 		JButton btnCheckout = new JButton("Checkout");
+		btnCheckout.setForeground(new Color(102, 255, 255));
+		btnCheckout.setBackground(new Color(0, 0, 51));
 		btnCheckout.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		
-		btnCheckout.setBounds(649, 452, 131, 85);
+		btnCheckout.setBounds(650, 465, 131, 84);
 		contentPane.add(btnCheckout);
 		
-		JLabel lblItem = new JLabel("Item :");
-		lblItem.setFont(new Font("Segoe UI", Font.PLAIN, 34));
-		lblItem.setBounds(8, 467, 94, 39);
-		contentPane.add(lblItem);
-		
-		JLabel lblItemName = new JLabel("Name");
-		lblItemName.setFont(new Font("Segoe UI", Font.PLAIN, 34));
-		lblItemName.setBounds(114, 467, 116, 39);
+		JLabel lblItemName = new JLabel("No item selected..");
+		lblItemName.setFont(new Font("Segoe UI", Font.PLAIN, 27));
+		lblItemName.setBounds(10, 467, 220, 39);
 		contentPane.add(lblItemName);
 		
 		JLabel lblNewLabel = new JLabel("");
@@ -297,7 +296,7 @@ public class Cashier extends JFrame {
 		
 		JLabel lblRp = new JLabel("Rp.");
 		lblRp.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblRp.setBounds(480, 486, 30, 23);
+		lblRp.setBounds(480, 499, 30, 23);
 		contentPane.add(lblRp);
 		
 		

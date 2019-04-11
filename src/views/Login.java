@@ -102,7 +102,8 @@ public class Login {
 		txtUsername.setColumns(10);
 		
 		JButton btnSubmit = new JButton("Login");
-		btnSubmit.setBackground(Color.DARK_GRAY);
+		btnSubmit.setForeground(new Color(102, 255, 255));
+		btnSubmit.setBackground(new Color(0, 0, 51));
 		btnSubmit.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		
 		btnSubmit.addActionListener(new ActionListener() {
