@@ -348,10 +348,11 @@ public class Cashier extends JFrame {
 					itemList.setRowSelectionInterval(idx, idx);
 					Item selected = findItem((String)itemList.getValueAt(idx, 0));
 					lblItemName.setText(selected.getName());
+					txtQty.requestFocus();
 				}
 				else {
 					txtFind.setText(null);
-					lblItemName.setText("Name");
+					lblItemName.setText("Select an Item");
 					itemList.getSelectionModel().clearSelection();
 				}
 		    }
@@ -366,9 +367,16 @@ public class Cashier extends JFrame {
 		    	Integer qty = Integer.parseInt(txtQty.getText());
 				int rowIndex = itemList.getSelectedRow();
 				Item selected = findItem((String)itemList.getValueAt(rowIndex, 0));
-				AddPurchase(selected, qty);
+				if(selected.getStock()>=qty) {
+					AddPurchase(selected, qty);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Purchase Quantity must be lower than stock", "Insufficient Stock", JOptionPane.ERROR_MESSAGE);
+				}
+				txtQty.setText("1");
 				UpdatePurchaseList();		
 				SetTotal();
+				txtFind.requestFocus();
 		    }
 		};
 		
