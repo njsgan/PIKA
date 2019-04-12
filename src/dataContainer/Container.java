@@ -8,6 +8,7 @@ public class Container {
 	
 	public static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 	public static ArrayList<Item> items = new ArrayList<Item>();
+	public static ArrayList<TransactionHistory> transactionHistory = new ArrayList<TransactionHistory>();
 
 	public Container() {
 		// TODO Auto-generated constructor stub

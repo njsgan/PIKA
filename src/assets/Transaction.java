@@ -35,7 +35,13 @@ public class Transaction {
 	public void setCashier(UserCashier cashier) {
 		this.cashier = cashier;
 	}
-	
+	public Integer getRevenue() {
+		Integer total = 0;
+		for(Purchase purchase : purchases) {
+			total+=purchase.getTotal();
+		}
+		return total;
+	}
 	
 
 }

@@ -1,15 +1,20 @@
 package dataConnector;
 
+import java.awt.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import assets.Item;
 import assets.Purchase;
 import assets.Transaction;
+import assets.TransactionHistory;
 import assets.User;
 import assets.UserCashier;
+import assets.UserSupervisor;
 import dataContainer.Container;
 
 public class DBConn {
@@ -37,6 +42,7 @@ public class DBConn {
 		    	Integer age = rs.getInt("age");
 		    	Integer status = rs.getInt("status");
 		    	if(status == 1) return new UserCashier(fname, lname, address, phone, age, status, user_name, pass_word);
+		    	else if (status == 2) return new UserSupervisor(fname, lname, address, phone, age, status, user_name, pass_word);
 		    }
 		    return null;
 		} catch (Exception e) {
@@ -117,6 +123,54 @@ public class DBConn {
 		    		itemPRICEs = itemPRICEs + purchase.getItem().getPrice()+"#";
 		    	}
 		    	st.executeUpdate("INSERT INTO transactions (trxID, itemID, itemQTY, itemPRICE, sales) VALUES ('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"')");
+		    }
+		    
+		    
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+	}
+	
+	private static Item findItem(String id) {
+		for(Item item : Container.items) {
+			if (item.getCode().equals(id)) return item;
+		}
+		return null;
+	}
+	
+	public static void addPurchases() {
+		try {
+			//create connection
+			String myDriver = "com.mysql.jdbc.Driver";
+		    String myUrl = "jdbc:mysql://localhost/pikapos";
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    String query = "SELECT * FROM transactions";
+		    Statement st = conn.createStatement();
+		    
+		    ResultSet rs = st.executeQuery(query);
+		    
+		    while(rs.next()) {
+		    	String trxID = rs.getString("trxID");
+		    	String itemID = rs.getString("itemID");
+		    	String itemQTY = rs.getString("itemQTY");
+		    	String itemPrice = rs.getString("itemPRICE");
+		    	String cashier = rs.getString("sales");
+		    	
+		    	String[] itemIDs = itemID.split("#");
+		    	String[] itemQTYs = itemQTY.split("#");
+		    	String[] itemPrices = itemPrice.split("#");
+		    	
+		    	TransactionHistory trx = new TransactionHistory(trxID, cashier);
+		    	
+		    	for(int i = 0; i<itemIDs.length-1; i++) {
+		    		trx.addItem(itemIDs[i].toString(), Integer.parseInt(itemPrices[i].toString()), Integer.parseInt(itemQTYs[i].toString()));
+		    	}
+		    	System.out.println(cashier);
+		    	Container.transactionHistory.add(trx);
+		    	
 		    }
 		    
 		    

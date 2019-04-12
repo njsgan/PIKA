@@ -15,6 +15,13 @@ public class Item {
 		this.price = price;
 		this.stock = stock;
 	}
+	
+	public Item(String code, String name, Integer price) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.price = price;
+	}
 
 
 

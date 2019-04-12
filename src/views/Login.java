@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 
 import assets.User;
 import assets.UserCashier;
+import assets.UserSupervisor;
 import dataConnector.DBConn;
 
 import java.awt.Component;
@@ -59,9 +60,9 @@ public class Login {
 	}
 	
 	//masukkkk
-	public void UserAction(UserCashier cashier) {
+	private void UserAction(UserCashier cashier) {
 		frame.dispose();
-		Splash splash = new Splash();
+		Splash splash = new Splash(cashier);
 		splash.frmPika.setVisible(true);
 		try {
 			TimeUnit.SECONDS.sleep(1);
@@ -78,6 +79,26 @@ public class Login {
 		}
 		Cashier cashierScreen = new Cashier(cashier);
 		cashierScreen.setVisible(true);
+	}
+	private void UserAction(UserSupervisor supervisor) {
+		frame.dispose();
+		Splash splash = new Splash(supervisor);
+		splash.frmPika.setVisible(true);
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		splash.frmPika.dispose();
+		try {
+			TimeUnit.MICROSECONDS.sleep(150);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Supervisor supervisorScreen = new Supervisor(supervisor);
+		supervisorScreen.setVisible(true);
 	}
 
 	/**
@@ -125,9 +146,10 @@ public class Login {
 				try {
 				User loggedIn = DBConn.login(username, password);
 				if(loggedIn instanceof UserCashier ) UserAction((UserCashier)loggedIn);
+				else if (loggedIn instanceof UserSupervisor) UserAction((UserSupervisor)loggedIn);
 				}
 				catch(Exception args) {
-					JOptionPane.showMessageDialog(null, "invalid login", "Login Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "invalid login", args.toString(), JOptionPane.ERROR_MESSAGE);
 					txtPassword.setText(null);
 					txtUsername.setText(null);
 				}
@@ -142,9 +164,13 @@ public class Login {
 				try {
 				User loggedIn = DBConn.login(username, password);
 				if(loggedIn instanceof UserCashier ) UserAction((UserCashier)loggedIn);
+				else if (loggedIn instanceof UserSupervisor) UserAction((UserSupervisor)loggedIn);
+				else {
+					int i = 1/0;
+				}
 				}
 				catch(Exception args) {
-					JOptionPane.showMessageDialog(null, "invalid login", "Login Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "invalid login", args.toString(), JOptionPane.ERROR_MESSAGE);
 					txtPassword.setText(null);
 					txtUsername.setText(null);
 				}
