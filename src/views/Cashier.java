@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.text.NumberFormatter;
 
 import assets.Item;
 import assets.Purchase;
@@ -28,6 +29,7 @@ import java.awt.Font;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollBar;
@@ -36,6 +38,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -50,9 +53,11 @@ public class Cashier extends JFrame {
 	private JTextField txtFind;
 	private JTable itemList;
 	private JTable purchasesList;
-	private JTextField textField_1;
-	private JTextField txtQty;
+	private JFormattedTextField textField_1;
+	private JFormattedTextField txtQty;
 	private JLabel lblTotalBottom;
+	private NumberFormat format = NumberFormat.getIntegerInstance();
+    private NumberFormatter formatter = new NumberFormatter(format);
 	
 	private ArrayList<Purchase> purchases = new ArrayList<Purchase>();
 
@@ -230,7 +235,15 @@ public class Cashier extends JFrame {
 		lblPay.setBounds(414, 496, 46, 20);
 		contentPane.add(lblPay);
 		
-		textField_1 = new JTextField();
+		format.setGroupingUsed(false);
+		formatter.setValueClass(Integer.class);
+	    formatter.setMinimum(1);
+	    formatter.setMaximum(Integer.MAX_VALUE);
+	    formatter.setAllowsInvalid(false);
+	    // If you want the value to be committed on each keystroke instead of focus lost
+	    formatter.setCommitsOnValidEdit(true);
+	    
+		textField_1 = new JFormattedTextField(formatter);
 		textField_1.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		textField_1.setBounds(520, 500, 105, 20);
 		contentPane.add(textField_1);
@@ -256,7 +269,7 @@ public class Cashier extends JFrame {
 		lblQty.setBounds(10, 505, 88, 48);
 		contentPane.add(lblQty);
 		
-		txtQty = new JTextField();
+	    txtQty = new JFormattedTextField(formatter);
 		txtQty.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		txtQty.setText("1");
 		txtQty.setBounds(114, 511, 105, 39);
@@ -369,6 +382,8 @@ public class Cashier extends JFrame {
 				Item selected = findItem((String)itemList.getValueAt(rowIndex, 0));
 				if(selected.getStock()>=qty) {
 					AddPurchase(selected, qty);
+					selected.setStock(selected.getStock()-qty);
+					UpdateList();
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Purchase Quantity must be lower than stock", "Insufficient Stock", JOptionPane.ERROR_MESSAGE);
@@ -391,7 +406,12 @@ public class Cashier extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				int rowIndex = purchasesList.getSelectedRow();
 				Purchase selected = findItemToDelete(purchasesList.getValueAt(rowIndex, 0).toString());
+				Item revertback = findItem(purchasesList.getValueAt(rowIndex, 0).toString());
+				Integer newstock = revertback.getStock()+parseInt(purchasesList.getValueAt(rowIndex,2).toString());
+				revertback.setStock(newstock);
+				// TODO : Revert back stock to its initial stock
 				purchases.remove(selected);
+				UpdateList();
 				UpdatePurchaseList();
 				SetTotal();
 			}
