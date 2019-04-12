@@ -155,6 +155,7 @@ public class Cashier extends JFrame {
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
 		
+		
 		JLabel lblCashier = new JLabel("Cashier :");
 		lblCashier.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
 		lblCashier.setBounds(30, 82, 72, 21);
@@ -313,6 +314,7 @@ public class Cashier extends JFrame {
 					int rowIndex = itemList.getSelectedRow();
 					Item selected = findItem((String)itemList.getValueAt(rowIndex, 0));
 					lblItemName.setText(selected.getName());
+					txtQty.requestFocus();
 				}
 				catch(Exception e1) {};
 			}
@@ -345,20 +347,28 @@ public class Cashier extends JFrame {
 		    }
 		};
 		
-		btnFind.addActionListener(actionSearch);
-		txtFind.addActionListener(actionSearch);
-		
-		
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Integer qty = Integer.parseInt(txtQty.getText());
+		//AddQty With Enter
+		AbstractAction actionATC = new AbstractAction()
+		{
+		    @Override
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	Integer qty = Integer.parseInt(txtQty.getText());
 				int rowIndex = itemList.getSelectedRow();
 				System.out.println(rowIndex);
 				Item selected = findItem((String)itemList.getValueAt(rowIndex, 0));
 				AddPurchase(selected, qty);
 				UpdatePurchaseList();		
 				SetTotal();
-			}});
+		    }
+		};
+		
+		btnFind.addActionListener(actionSearch);
+		txtFind.addActionListener(actionSearch);
+		
+		
+		btnAdd.addActionListener(actionATC);
+		txtQty.addActionListener(actionATC);
 		
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
