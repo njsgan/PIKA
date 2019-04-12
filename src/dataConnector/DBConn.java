@@ -63,7 +63,7 @@ public class DBConn {
 		    	Integer price = rs.getInt("price");
 		    	Integer stock = rs.getInt("stock");
 		    	Container.items.add(new Item(code, name, price, stock));
-		    	System.out.println(name);
+//		    	System.out.println(name);
 		    }
 		    
 		} catch (Exception e) {

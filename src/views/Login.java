@@ -85,20 +85,23 @@ public class Login {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setUndecorated(true);
-		frame.setBounds(100, 100, 450, 217);
+		frame.setBounds(100, 100, 450, 232);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Username");
+		lblNewLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		lblNewLabel.setBounds(47, 83, 64, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Password");
+		lblNewLabel_1.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		lblNewLabel_1.setBounds(47, 121, 64, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		txtUsername = new JTextField();
+		txtUsername.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		txtUsername.setBounds(121, 80, 283, 20);
 		frame.getContentPane().add(txtUsername);
 		txtUsername.setColumns(10);
@@ -132,6 +135,7 @@ public class Login {
 		frame.getContentPane().add(separator);
 		
 		txtPassword = new JPasswordField();
+		txtPassword.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		txtPassword.setBounds(121, 118, 283, 20);
 		frame.getContentPane().add(txtPassword);
 		
@@ -139,5 +143,10 @@ public class Login {
 		lblNewLabel_2.setIcon(new ImageIcon(Login.class.getResource("/views/pika10025.png")));
 		lblNewLabel_2.setBounds(165, 11, 125, 60);
 		frame.getContentPane().add(lblNewLabel_2);
+		
+		JLabel lblV = new JLabel("v. 0.1");
+		lblV.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblV.setBounds(394, 217, 46, 14);
+		frame.getContentPane().add(lblV);
 	}
 }

@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
 import dataConnector.DBConn;
 
@@ -41,7 +42,6 @@ public class Splash {
 	 * Create the application.
 	 */
 	public Splash() {
-		DBConn.addItems();
 		initialize();
 	}
 
@@ -59,10 +59,10 @@ public class Splash {
 		frmPika.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPika.getContentPane().setLayout(null);
 		
-		JProgressBar progressBar = new JProgressBar();
-		progressBar.setBounds(0, 225, 450, 14);
-		progressBar.setValue(50);
-		frmPika.getContentPane().add(progressBar);
+		JLabel lblConn = new JLabel("");
+		lblConn.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+		lblConn.setBounds(87, 220, 280, 14);
+		frmPika.getContentPane().add(lblConn);
 		
 		
 		JLabel lblNewLabel = new JLabel("");
@@ -71,6 +71,27 @@ public class Splash {
 		lblNewLabel.setIcon(new ImageIcon(Splash.class.getResource("pikasmall.png")));
 		frmPika.getContentPane().add(lblNewLabel);
 		
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setBounds(0, 213, 450, 29);
+		frmPika.getContentPane().add(progressBar);
+		
+		SwingWorker sw = new SwingWorker() {
+	        @Override
+	        protected Object doInBackground() throws Exception {
+	            progressBar.setIndeterminate(true);
+	            lblConn.setText("Connecting Database...");
+	            DBConn.addItems();
+	            return null;
+	        }
+
+	        @Override
+	        public void done(){
+	        	progressBar.setIndeterminate(false);
+	        	lblConn.setText("Done Connecting...");
+	            progressBar.setValue(100); // 100%
+	        }
+	    };
+	     sw.execute();     
 	}
 
 }

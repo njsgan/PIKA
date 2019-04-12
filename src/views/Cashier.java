@@ -250,7 +250,7 @@ public class Cashier extends JFrame {
 		
 		JButton btnAdd = new JButton("Add to Cart");
 		btnAdd.setForeground(new Color(102, 255, 255));
-		btnAdd.setBackground(new Color(0, 0, 102));
+		btnAdd.setBackground(new Color(0, 0, 51));
 		btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		
 		btnAdd.setBounds(240, 467, 135, 84);
@@ -283,15 +283,15 @@ public class Cashier extends JFrame {
 		JLabel lblNamaPerusahaanJeleque = new JLabel("NAMA PERUSAHAAN");
 		lblNamaPerusahaanJeleque.setFont(new Font("Segoe UI", Font.BOLD, 24));
 		lblNamaPerusahaanJeleque.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNamaPerusahaanJeleque.setBounds(178, 11, 603, 39);
+		lblNamaPerusahaanJeleque.setBounds(178, 0, 603, 39);
 		contentPane.add(lblNamaPerusahaanJeleque);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(178, 48, 602, 2);
+		separator_1.setBounds(178, 37, 602, 2);
 		contentPane.add(separator_1);
 		
 		JLabel lblNewLabel_1 = new JLabel("<html>\r\nJl. Alamat Perusahaan no. Nomor Rumah Perusahaan, Bantul, D.I.Y.<br/>\r\nPhone : +62 69696969\r\n</html>");
-		lblNewLabel_1.setBounds(178, 52, 603, 30);
+		lblNewLabel_1.setBounds(178, 41, 603, 30);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblRp = new JLabel("Rp.");
