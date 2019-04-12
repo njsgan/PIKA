@@ -355,7 +355,6 @@ public class Cashier extends JFrame {
 		    {
 		    	Integer qty = Integer.parseInt(txtQty.getText());
 				int rowIndex = itemList.getSelectedRow();
-				System.out.println(rowIndex);
 				Item selected = findItem((String)itemList.getValueAt(rowIndex, 0));
 				AddPurchase(selected, qty);
 				UpdatePurchaseList();		
@@ -391,6 +390,7 @@ public class Cashier extends JFrame {
 					UpdatePurchaseList();
 					SetTotal();
 					UpdateList();
+					DBConn.UpdateItemDB();
 				}
 			}
 		});

@@ -71,6 +71,28 @@ public class DBConn {
 		    System.err.println(e.getMessage());
 		}
 	}
+	
+	public static void UpdateItemDB() {
+		try {
+			//create connection
+			String myDriver = "com.mysql.jdbc.Driver";
+		    String myUrl = "jdbc:mysql://localhost/pikapos";
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    
+		    Statement st = conn.createStatement();
+		    
+		    for(Item item : Container.items) {
+		    	st.executeUpdate("UPDATE items set stock = '"+item.getStock()+"' WHERE code = '"+item.getCode()+"'");
+		    }
+		    
+		    
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+	}
 
 	public DBConn() {
 		 try
