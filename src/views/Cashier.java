@@ -14,12 +14,16 @@ import assets.Purchase;
 import assets.Transaction;
 import assets.User;
 import assets.UserCashier;
+import dataConnector.DBConn;
 import dataContainer.Container;
 
+import javax.swing.AbstractAction;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -138,6 +142,7 @@ public class Cashier extends JFrame {
 		}
 		return null;
 	}
+	
 	public Cashier(UserCashier cashier) {
 //		AddItems();
 		setResizable(false);
@@ -314,12 +319,16 @@ public class Cashier extends JFrame {
 		});
 		
 		//find item with search
-		btnFind.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int idx = -1;
+		AbstractAction actionSearch = new AbstractAction()
+		{
+		    @Override
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	int idx = -1;
 				for(int i = 0; i<itemList.getRowCount(); i++) {
 					if(txtFind.getText().equals(itemList.getValueAt(i, 0)) || txtFind.getText().equals(itemList.getValueAt(i, 1))) {
 						idx = i;
+						txtFind.setText("");
 						break;
 					}
 				}
@@ -333,8 +342,12 @@ public class Cashier extends JFrame {
 					lblItemName.setText("Name");
 					itemList.getSelectionModel().clearSelection();
 				}
-			}
-		});
+		    }
+		};
+		
+		btnFind.addActionListener(actionSearch);
+		txtFind.addActionListener(actionSearch);
+		
 		
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

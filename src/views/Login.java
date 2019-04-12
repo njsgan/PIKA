@@ -17,6 +17,8 @@ import assets.UserCashier;
 import dataConnector.DBConn;
 
 import java.awt.Component;
+
+import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
@@ -106,10 +108,31 @@ public class Login {
 		frame.getContentPane().add(txtUsername);
 		txtUsername.setColumns(10);
 		
+		
 		JButton btnSubmit = new JButton("Login");
 		btnSubmit.setForeground(new Color(102, 255, 255));
 		btnSubmit.setBackground(new Color(0, 0, 51));
 		btnSubmit.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		
+		AbstractAction actionLogin = new AbstractAction()
+		{
+		    @Override
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	String password = txtPassword.getText();
+				String username = txtUsername.getText();
+				
+				try {
+				User loggedIn = DBConn.login(username, password);
+				if(loggedIn instanceof UserCashier ) UserAction((UserCashier)loggedIn);
+				}
+				catch(Exception args) {
+					JOptionPane.showMessageDialog(null, "invalid login", "Login Error", JOptionPane.ERROR_MESSAGE);
+					txtPassword.setText(null);
+					txtUsername.setText(null);
+				}
+		    }
+		};
 		
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -138,6 +161,9 @@ public class Login {
 		txtPassword.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		txtPassword.setBounds(121, 118, 283, 20);
 		frame.getContentPane().add(txtPassword);
+		
+		txtUsername.addActionListener(actionLogin);
+		txtPassword.addActionListener(actionLogin);
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Login.class.getResource("/views/pika10025.png")));
