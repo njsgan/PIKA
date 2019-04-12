@@ -392,11 +392,14 @@ public class Cashier extends JFrame {
 		btnCheckout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!purchases.isEmpty()) {
-					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd-HH:mm:ss");
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ddMMyyyy-HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
-					String trxID = "TRX-"+dtf.format(now).toString()+cashier.getUsername();
+					String trxID = "TRX"+cashier.getUsername()+dtf.format(now).toString();
 					Transaction trx = new Transaction(trxID, cashier);for(Purchase purchase : purchases) {
 						purchase.getItem().setStock(purchase.getItem().getStock()-purchase.getQty());
+						if(purchase.getItem().getStock()<0) {
+						    purchase.getItem().setStock(0);
+						}
 						trx.addPurchase(purchase);
 					}
 					Container.transactions.add(trx);
