@@ -7,7 +7,7 @@ import assets.*;
 public class Container {
 	
 	public static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-	public static ArrayList<Items> items = new ArrayList<Items>();
+	public static ArrayList<Item> items = new ArrayList<Item>();
 
 	public Container() {
 		// TODO Auto-generated constructor stub

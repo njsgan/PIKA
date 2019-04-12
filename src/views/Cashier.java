@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import assets.Items;
+import assets.Item;
 import assets.Purchase;
 import assets.Transaction;
 import assets.User;
@@ -69,24 +69,23 @@ public class Cashier extends JFrame {
 	 * Create the frame.
 	 */
 	
-//	private void AddItems() {
-//		items.add(new Items("123", "Item 1", 50000, 50));
-//		items.add(new Items("234", "Item 2", 50000, 50));
-//		items.add(new Items("345", "Item 3", 50000, 50));
-//	}
+	private void AddItems() {
+		Container.items.add(new Item("123", "Item 1", 50000, 50));
+		Container.items.add(new Item("234", "Item 2", 50000, 50));
+		Container.items.add(new Item("345", "Item 3", 50000, 50));
+	}
 	
 	private void UpdateList() {
 		String col[] = {"Code", "Name", "Price", "Stock"};
-		DefaultTableModel tableModel = new DefaultTableModel(col, 0) {
+		DefaultTableModel tableModel = new DefaultTableModel(col, 0){
 			public boolean isCellEditable(int row, int column)
 		    {
 		      return false;//This causes all cells to be not editable
 		    }
 		};
-		itemList = new JTable();
 		itemList.setModel(tableModel);
 		//adding items :)
-		for(Items item : Container.items) {
+		for(Item item : Container.items) {
 			String code = item.getCode();
 			String name = item.getName();
 			Integer price = item.getPrice();
@@ -96,7 +95,7 @@ public class Cashier extends JFrame {
 		}
 	}
 	
-	private void AddPurchase(Items item, Integer qty) {
+	private void AddPurchase(Item item, Integer qty) {
 		purchases.add(new Purchase(item, qty));
 	}
 	
@@ -126,8 +125,8 @@ public class Cashier extends JFrame {
 		}
 	}
 	
-	private Items findItem(String code) {
-		for(Items item : Container.items) {
+	private Item findItem(String code) {
+		for(Item item : Container.items) {
 			if(item.getCode().equals(code)) return item;
 		}
 		return null;
@@ -140,6 +139,7 @@ public class Cashier extends JFrame {
 		return null;
 	}
 	public Cashier(UserCashier cashier) {
+//		AddItems();
 		setResizable(false);
 		setTitle("PiKA Point-of-Sales");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -157,7 +157,7 @@ public class Cashier extends JFrame {
 		
 		JLabel lblName = new JLabel(cashier.getFname());
 		lblName.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		lblName.setBounds(112, 82, 88, 21);
+		lblName.setBounds(112, 82, 178, 21);
 		contentPane.add(lblName);
 		
 		JSeparator separator = new JSeparator();
@@ -180,8 +180,7 @@ public class Cashier extends JFrame {
 		contentPane.add(scrollPane);
 
 		//items list table here
-		String col[] = {"Code", "Name", "Price", "Stock"};
-		DefaultTableModel tableModel = new DefaultTableModel(col, 0);
+
 		itemList = new JTable();
 		UpdateList();
 		scrollPane.setViewportView(itemList);
@@ -207,52 +206,54 @@ public class Cashier extends JFrame {
 		
 		JLabel lblTotal_1 = new JLabel("Total");
 		lblTotal_1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblTotal_1.setBounds(414, 452, 72, 20);
+		lblTotal_1.setBounds(414, 465, 72, 20);
 		contentPane.add(lblTotal_1);
 		
 		JLabel lblPay = new JLabel("Pay");
 		lblPay.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblPay.setBounds(414, 483, 46, 20);
+		lblPay.setBounds(414, 496, 46, 20);
 		contentPane.add(lblPay);
 		
 		textField_1 = new JTextField();
 		textField_1.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		textField_1.setBounds(520, 487, 105, 20);
+		textField_1.setBounds(520, 500, 105, 20);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
 		JLabel lblReturn = new JLabel("Return");
 		lblReturn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblReturn.setBounds(414, 514, 64, 23);
+		lblReturn.setBounds(414, 527, 64, 23);
 		contentPane.add(lblReturn);
 		
-		lblTotalBottom = new JLabel("Rp. xxxx");
+		lblTotalBottom = new JLabel("Rp. 0");
 		lblTotalBottom.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblTotalBottom.setBounds(480, 452, 88, 20);
+		lblTotalBottom.setBounds(480, 465, 88, 20);
 		contentPane.add(lblTotalBottom);
 		
-		JLabel lblReturnValue = new JLabel("Rp. xxxx");
+		JLabel lblReturnValue = new JLabel("Rp. 0");
 		lblReturnValue.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblReturnValue.setBounds(479, 514, 72, 23);
+		lblReturnValue.setBounds(479, 527, 72, 23);
 		contentPane.add(lblReturnValue);
 		
 		JLabel lblQty = new JLabel("Qty   :");
-		lblQty.setFont(new Font("Segoe UI", Font.PLAIN, 34));
-		lblQty.setBounds(10, 507, 88, 48);
+		lblQty.setFont(new Font("Segoe UI", Font.PLAIN, 30));
+		lblQty.setBounds(10, 505, 88, 48);
 		contentPane.add(lblQty);
 		
 		txtQty = new JTextField();
-		txtQty.setFont(new Font("Segoe UI", Font.PLAIN, 34));
+		txtQty.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		txtQty.setText("1");
-		txtQty.setBounds(114, 511, 86, 39);
+		txtQty.setBounds(114, 511, 105, 39);
 		contentPane.add(txtQty);
 		txtQty.setColumns(10);
 		
 		
 		JButton btnAdd = new JButton("Add to Cart");
-		btnAdd.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		btnAdd.setForeground(new Color(102, 255, 255));
+		btnAdd.setBackground(new Color(0, 0, 102));
+		btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		
-		btnAdd.setBounds(240, 503, 135, 48);
+		btnAdd.setBounds(240, 467, 135, 84);
 		contentPane.add(btnAdd);
 		
 		JButton btnRemove = new JButton("Remove");
@@ -262,19 +263,16 @@ public class Cashier extends JFrame {
 		contentPane.add(btnRemove);
 		
 		JButton btnCheckout = new JButton("Checkout");
+		btnCheckout.setForeground(new Color(102, 255, 255));
+		btnCheckout.setBackground(new Color(0, 0, 51));
 		btnCheckout.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		
-		btnCheckout.setBounds(649, 452, 131, 85);
+		btnCheckout.setBounds(650, 465, 131, 84);
 		contentPane.add(btnCheckout);
 		
-		JLabel lblItem = new JLabel("Item :");
-		lblItem.setFont(new Font("Segoe UI", Font.PLAIN, 34));
-		lblItem.setBounds(8, 467, 94, 39);
-		contentPane.add(lblItem);
-		
-		JLabel lblItemName = new JLabel("Name");
-		lblItemName.setFont(new Font("Segoe UI", Font.PLAIN, 34));
-		lblItemName.setBounds(114, 467, 116, 39);
+		JLabel lblItemName = new JLabel("No item selected..");
+		lblItemName.setFont(new Font("Segoe UI", Font.PLAIN, 27));
+		lblItemName.setBounds(10, 467, 220, 39);
 		contentPane.add(lblItemName);
 		
 		JLabel lblNewLabel = new JLabel("");
@@ -298,7 +296,7 @@ public class Cashier extends JFrame {
 		
 		JLabel lblRp = new JLabel("Rp.");
 		lblRp.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblRp.setBounds(480, 486, 30, 23);
+		lblRp.setBounds(480, 499, 30, 23);
 		contentPane.add(lblRp);
 		
 		
@@ -308,7 +306,7 @@ public class Cashier extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				try {
 					int rowIndex = itemList.getSelectedRow();
-					Items selected = findItem((String)itemList.getValueAt(rowIndex, 0));
+					Item selected = findItem((String)itemList.getValueAt(rowIndex, 0));
 					lblItemName.setText(selected.getName());
 				}
 				catch(Exception e1) {};
@@ -327,7 +325,7 @@ public class Cashier extends JFrame {
 				}
 				if(idx!=-1) {
 					itemList.setRowSelectionInterval(idx, idx);
-					Items selected = findItem((String)itemList.getValueAt(idx, 0));
+					Item selected = findItem((String)itemList.getValueAt(idx, 0));
 					lblItemName.setText(selected.getName());
 				}
 				else {
@@ -339,12 +337,11 @@ public class Cashier extends JFrame {
 		});
 		
 		btnAdd.addActionListener(new ActionListener() {
-
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Integer qty = Integer.parseInt(txtQty.getText());
 				int rowIndex = itemList.getSelectedRow();
-				Items selected = findItem((String)itemList.getValueAt(rowIndex, 0));
+				System.out.println(rowIndex);
+				Item selected = findItem((String)itemList.getValueAt(rowIndex, 0));
 				AddPurchase(selected, qty);
 				UpdatePurchaseList();		
 				SetTotal();
@@ -363,11 +360,14 @@ public class Cashier extends JFrame {
 		btnCheckout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!purchases.isEmpty()) {
-					Container.transactions.add(new Transaction("abc123", purchases, cashier));
+					Container.transactions.add(new Transaction("abc123", purchases, null));
+					for(Purchase purchase : purchases) {
+						purchase.getItem().setStock(purchase.getItem().getStock()-purchase.getQty());
+					}
 					purchases.clear();
 					UpdatePurchaseList();
-					UpdateList();
 					SetTotal();
+					UpdateList();
 				}
 			}
 		});

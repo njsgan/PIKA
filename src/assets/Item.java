@@ -1,6 +1,6 @@
 package assets;
 
-public class Items {
+public class Item {
 	private String code;
 	private String name;
 	private Integer price;
@@ -8,7 +8,7 @@ public class Items {
 	
 	
 
-	public Items(String code, String name, Integer price, Integer stock) {
+	public Item(String code, String name, Integer price, Integer stock) {
 		super();
 		this.code = code;
 		this.name = name;
@@ -66,7 +66,7 @@ public class Items {
 
 
 
-	public Items() {
+	public Item() {
 		// TODO Auto-generated constructor stub
 	}
 

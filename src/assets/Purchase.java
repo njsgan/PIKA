@@ -2,14 +2,14 @@ package assets;
 
 public class Purchase {
 	
-	private Items item;
+	private Item item;
 	private Integer qty;
 
-	public Items getItem() {
+	public Item getItem() {
 		return item;
 	}
 
-	public void setItem(Items item) {
+	public void setItem(Item item) {
 		this.item = item;
 	}
 
@@ -21,7 +21,7 @@ public class Purchase {
 		this.qty = qty;
 	}
 
-	public Purchase(Items item, Integer qty) {
+	public Purchase(Item item, Integer qty) {
 		super();
 		this.item = item;
 		this.qty = qty;

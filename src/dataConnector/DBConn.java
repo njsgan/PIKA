@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import assets.Items;
+import assets.Item;
 import assets.User;
 import assets.UserCashier;
 import dataContainer.Container;
@@ -62,7 +62,7 @@ public class DBConn {
 		    	String name = rs.getString("name");
 		    	Integer price = rs.getInt("price");
 		    	Integer stock = rs.getInt("stock");
-		    	Container.items.add(new Items(code, name, price, stock));
+		    	Container.items.add(new Item(code, name, price, stock));
 		    	System.out.println(name);
 		    }
 		    
