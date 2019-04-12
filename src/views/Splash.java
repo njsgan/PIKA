@@ -60,6 +60,7 @@ public class Splash {
 		frmPika.getContentPane().setLayout(null);
 		
 		JLabel lblConn = new JLabel("");
+		lblConn.setHorizontalAlignment(SwingConstants.CENTER);
 		lblConn.setFont(new Font("Segoe UI", Font.PLAIN, 11));
 		lblConn.setBounds(87, 220, 280, 14);
 		frmPika.getContentPane().add(lblConn);
