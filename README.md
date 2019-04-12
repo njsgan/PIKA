@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="400" height="400" src="Pika_POS.png">
+  <img width="245.5" height="auto" src="Pika_POS.png">
 </p>
 <br/>
 
