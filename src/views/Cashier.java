@@ -36,6 +36,8 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
@@ -362,7 +364,7 @@ public class Cashier extends JFrame {
 					Item selected = findItem((String)itemList.getValueAt(idx, 0));
 					lblItemName.setText(selected.getName());
 					txtQty.requestFocus();
-				}
+		  		}
 				else {
 					txtFind.setText(null);
 					lblItemName.setText("Select an Item");
@@ -381,8 +383,8 @@ public class Cashier extends JFrame {
 				int rowIndex = itemList.getSelectedRow();
 				Item selected = findItem((String)itemList.getValueAt(rowIndex, 0));
 				if(selected.getStock()>=qty) {
-					AddPurchase(selected, qty);
 					selected.setStock(selected.getStock()-qty);
+					AddPurchase(selected, qty);
 					UpdateList();
 				}
 				else {
@@ -401,15 +403,35 @@ public class Cashier extends JFrame {
 		
 		btnAdd.addActionListener(actionATC);
 		txtQty.addActionListener(actionATC);
+		txtQty.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					Integer qty = Integer.parseInt(txtQty.getText());
+					int rowIndex = itemList.getSelectedRow();
+					Item selected = findItem((String)itemList.getValueAt(rowIndex, 0));
+					if(selected.getStock()>=qty) {
+						selected.setStock(selected.getStock()-qty);
+						AddPurchase(selected, qty);
+						UpdateList();
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Purchase Quantity must be lower than stock", "Insufficient Stock", JOptionPane.ERROR_MESSAGE);
+					}
+					txtQty.setText("1");
+					UpdatePurchaseList();		
+					SetTotal();
+					txtFind.requestFocus();
+				}
+			}
+		});
 		
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int rowIndex = purchasesList.getSelectedRow();
 				Purchase selected = findItemToDelete(purchasesList.getValueAt(rowIndex, 0).toString());
-				Item revertback = findItem(purchasesList.getValueAt(rowIndex, 0).toString());
-				Integer newstock = revertback.getStock()+parseInt(purchasesList.getValueAt(rowIndex,2).toString());
-				revertback.setStock(newstock);
 				// TODO : Revert back stock to its initial stock
+				selected.getItem().setStock(selected.getItem().getStock()+selected.getQty());
 				purchases.remove(selected);
 				UpdateList();
 				UpdatePurchaseList();
@@ -423,11 +445,8 @@ public class Cashier extends JFrame {
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ddMMyyyy-HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
 					String trxID = "TRX"+cashier.getUsername()+dtf.format(now).toString();
-					Transaction trx = new Transaction(trxID, cashier);for(Purchase purchase : purchases) {
-						purchase.getItem().setStock(purchase.getItem().getStock()-purchase.getQty());
-						if(purchase.getItem().getStock()<0) {
-						    purchase.getItem().setStock(0);
-						}
+					Transaction trx = new Transaction(trxID, cashier);
+					for(Purchase purchase : purchases) {
 						trx.addPurchase(purchase);
 					}
 					Container.transactions.add(trx);
