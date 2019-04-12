@@ -35,6 +35,9 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
@@ -154,6 +157,13 @@ public class Cashier extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				DBConn.UpdateTrxDB();
+			}
+		});
 		
 		
 		JLabel lblCashier = new JLabel("Cashier :");
@@ -382,10 +392,14 @@ public class Cashier extends JFrame {
 		btnCheckout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!purchases.isEmpty()) {
-					Container.transactions.add(new Transaction("abc123", purchases, null));
-					for(Purchase purchase : purchases) {
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd-HH:mm:ss");
+					LocalDateTime now = LocalDateTime.now();
+					String trxID = "TRX-"+dtf.format(now).toString()+cashier.getUsername();
+					Transaction trx = new Transaction(trxID, cashier);for(Purchase purchase : purchases) {
 						purchase.getItem().setStock(purchase.getItem().getStock()-purchase.getQty());
+						trx.addPurchase(purchase);
 					}
+					Container.transactions.add(trx);
 					purchases.clear();
 					UpdatePurchaseList();
 					SetTotal();

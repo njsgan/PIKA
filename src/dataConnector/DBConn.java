@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import assets.Item;
+import assets.Purchase;
+import assets.Transaction;
 import assets.User;
 import assets.UserCashier;
 import dataContainer.Container;
@@ -85,6 +87,36 @@ public class DBConn {
 		    
 		    for(Item item : Container.items) {
 		    	st.executeUpdate("UPDATE items set stock = '"+item.getStock()+"' WHERE code = '"+item.getCode()+"'");
+		    }
+		    
+		    
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+	}
+	
+	public static void UpdateTrxDB() {
+		try {
+			//create connection
+			String myDriver = "com.mysql.jdbc.Driver";
+		    String myUrl = "jdbc:mysql://localhost/pikapos";
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    
+		    Statement st = conn.createStatement();
+		    
+		    for(Transaction transaction : Container.transactions) {
+		    	String itemIDs = "";
+		    	String itemQTYs = "";
+		    	String itemPRICEs = "";
+		    	for(Purchase purchase : transaction.getPurchases()) {
+		    		itemIDs = itemIDs + purchase.getItem().getCode()+"#";
+		    		itemQTYs = itemQTYs + purchase.getQty()+"#";
+		    		itemPRICEs = itemPRICEs + purchase.getItem().getPrice()+"#";
+		    	}
+		    	st.executeUpdate("INSERT INTO transactions (trxID, itemID, itemQTY, itemPRICE, sales) VALUES ('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"')");
 		    }
 		    
 		    

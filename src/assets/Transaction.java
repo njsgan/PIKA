@@ -9,10 +9,30 @@ public class Transaction {
 	public Transaction() {
 		// TODO Auto-generated constructor stub
 	}
-	public Transaction(String id, ArrayList<Purchase> purchases, UserCashier cashier) {
+	public Transaction(String id, UserCashier cashier) {
 		super();
 		this.id = id;
+		this.cashier = cashier;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public ArrayList<Purchase> getPurchases() {
+		return purchases;
+	}
+	public void setPurchases(ArrayList<Purchase> purchases) {
 		this.purchases = purchases;
+	}
+	public void addPurchase(Purchase purchase) {
+		purchases.add(purchase);
+	}
+	public UserCashier getCashier() {
+		return cashier;
+	}
+	public void setCashier(UserCashier cashier) {
 		this.cashier = cashier;
 	}
 	
