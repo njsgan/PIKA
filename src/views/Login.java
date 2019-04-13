@@ -24,6 +24,8 @@ import javax.swing.Box;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
@@ -39,6 +41,29 @@ public class Login {
 	/**
 	 * Launch the application.
 	 */
+	
+    public static String md5(String password) {
+        final byte[] defaultBytes = password.getBytes();
+        try {
+            final MessageDigest md5MsgDigest = MessageDigest.getInstance("MD5");
+            md5MsgDigest.reset();
+            md5MsgDigest.update(defaultBytes);
+            final byte messageDigest[] = md5MsgDigest.digest();
+            final StringBuffer hexString = new StringBuffer();
+            for (final byte element : messageDigest) {
+                final String hex = Integer.toHexString(0xFF & element);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            password = hexString + "";
+        } catch (final NoSuchAlgorithmException nsae) {
+            nsae.printStackTrace();
+        }
+        return password;
+    }
+    
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -144,38 +169,19 @@ public class Login {
 				String username = txtUsername.getText();
 				
 				try {
-				User loggedIn = DBConn.login(username, password);
+				User loggedIn = DBConn.login(username, md5(password));
 				if(loggedIn instanceof UserCashier ) UserAction((UserCashier)loggedIn);
 				else if (loggedIn instanceof UserSupervisor) UserAction((UserSupervisor)loggedIn);
 				}
 				catch(Exception args) {
-					JOptionPane.showMessageDialog(null, "invalid login", args.toString(), JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "invalid login", "Error Logging In!", JOptionPane.ERROR_MESSAGE);
 					txtPassword.setText(null);
 					txtUsername.setText(null);
 				}
 		    }
 		};
 		
-		btnSubmit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String password = txtPassword.getText();
-				String username = txtUsername.getText();
-				
-				try {
-				User loggedIn = DBConn.login(username, password);
-				if(loggedIn instanceof UserCashier ) UserAction((UserCashier)loggedIn);
-				else if (loggedIn instanceof UserSupervisor) UserAction((UserSupervisor)loggedIn);
-				else {
-					int i = 1/0;
-				}
-				}
-				catch(Exception args) {
-					JOptionPane.showMessageDialog(null, "invalid login", args.toString(), JOptionPane.ERROR_MESSAGE);
-					txtPassword.setText(null);
-					txtUsername.setText(null);
-				}
-			}
-		});
+		btnSubmit.addActionListener(actionLogin);
 		btnSubmit.setBounds(47, 167, 357, 39);
 		frame.getContentPane().add(btnSubmit);
 		

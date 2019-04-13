@@ -18,6 +18,9 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+import javax.swing.JSeparator;
 
 public class Supervisor extends JFrame {
 
@@ -82,6 +85,7 @@ public class Supervisor extends JFrame {
 		}
 	}
 	public Supervisor(UserSupervisor supervisor) {
+		setTitle("PiKA Point-of-Sales | Supervisor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 816, 600);
 		contentPane = new JPanel();
@@ -89,32 +93,51 @@ public class Supervisor extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblGreeting = new JLabel("Hi, "+supervisor.getFname());
-		lblGreeting.setFont(new Font("Tahoma", Font.PLAIN, 37));
-		lblGreeting.setBounds(28, 11, 135, 51);
+		JLabel lblGreeting = new JLabel("Welcome, "+supervisor.getFname());
+		lblGreeting.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		lblGreeting.setBounds(28, 85, 359, 24);
 		contentPane.add(lblGreeting);
 		
 		JLabel lblItemsList = new JLabel("Items List");
-		lblItemsList.setBounds(28, 73, 46, 14);
+		lblItemsList.setBounds(28, 114, 46, 14);
 		contentPane.add(lblItemsList);
 		
 		JLabel lblTransactionsList = new JLabel("Transactions List");
-		lblTransactionsList.setBounds(421, 73, 110, 14);
+		lblTransactionsList.setBounds(421, 114, 110, 14);
 		contentPane.add(lblTransactionsList);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(28, 98, 359, 452);
+		scrollPane.setBounds(28, 139, 359, 411);
 		contentPane.add(scrollPane);
 		
 		itemsList = new JTable();
 		scrollPane.setViewportView(itemsList);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(421, 98, 369, 452);
+		scrollPane_1.setBounds(421, 139, 369, 411);
 		contentPane.add(scrollPane_1);
 		
 		transactionsList = new JTable();
 		scrollPane_1.setViewportView(transactionsList);
+		
+		JLabel label = new JLabel("");
+		label.setIcon(new ImageIcon(Supervisor.class.getResource("/views/pika10025.png")));
+		label.setBounds(28, 14, 131, 60);
+		contentPane.add(label);
+		
+		JLabel label_1 = new JLabel("NAMA PERUSAHAAN");
+		label_1.setHorizontalAlignment(SwingConstants.LEFT);
+		label_1.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		label_1.setBounds(169, 11, 603, 39);
+		contentPane.add(label_1);
+		
+		JLabel label_2 = new JLabel("<html>\r\nJl. Alamat Perusahaan no. Nomor Rumah Perusahaan, Bantul, D.I.Y.<br/>\r\nPhone : +62 69696969\r\n</html>");
+		label_2.setBounds(169, 52, 603, 30);
+		contentPane.add(label_2);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(169, 48, 602, 2);
+		contentPane.add(separator);
 		setLocationRelativeTo(null);
 		
 		updateItemList();

@@ -26,6 +26,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.GridLayout;
+
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -62,6 +64,8 @@ public class Cashier extends JFrame {
     private NumberFormatter formatter = new NumberFormatter(format);
 	
 	private ArrayList<Purchase> purchases = new ArrayList<Purchase>();
+	
+	private JTextField fieldBox = new JTextField(10);
 
 	/**
 	 * Launch the application.
@@ -82,6 +86,27 @@ public class Cashier extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
+	// Box buat ID Supervisor
+	private JPanel getPanel()
+	{
+	    JPanel basePanel = new JPanel();
+
+	    JPanel centerPanel = new JPanel();
+	    centerPanel.setLayout(new GridLayout(3, 2, 5, 5));
+
+	    JLabel labelBox = new JLabel("Supervisor ID : ");
+
+	    // TODO : Focus ke FieldBox 
+	    centerPanel.add(labelBox);
+	    centerPanel.add(fieldBox);
+	    
+
+	    basePanel.add(centerPanel);
+
+
+	    return basePanel;
+	}
 	
 	private void AddItems() {
 		Container.items.add(new Item("123", "Item 1", 50000, 50));
@@ -428,14 +453,25 @@ public class Cashier extends JFrame {
 		
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+			
+				// TODO : Check DB ID Supervisor
 				int rowIndex = purchasesList.getSelectedRow();
-				Purchase selected = findItemToDelete(purchasesList.getValueAt(rowIndex, 0).toString());
-				// TODO : Revert back stock to its initial stock
-				selected.getItem().setStock(selected.getItem().getStock()+selected.getQty());
-				purchases.remove(selected);
-				UpdateList();
-				UpdatePurchaseList();
-				SetTotal();
+				if(rowIndex != -1){
+					Integer boxSPV = JOptionPane.showConfirmDialog(null, getPanel(), "Call a Supervisor to Remove", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		    	    if(fieldBox.getText().equals("MMK")){
+						Purchase selected = findItemToDelete(purchasesList.getValueAt(rowIndex, 0).toString());
+						// TODO : Revert back stock to its initial stock
+						selected.getItem().setStock(selected.getItem().getStock()+selected.getQty());
+						purchases.remove(selected);
+						UpdateList();
+						UpdatePurchaseList();
+						SetTotal();
+		    	    }else if(boxSPV == JOptionPane.OK_OPTION){
+		    	    	JOptionPane.showMessageDialog(null, "Not a supervisor", "Error!", JOptionPane.ERROR_MESSAGE);
+		    	    }
+				}else{
+					JOptionPane.showMessageDialog(null, "Not product selected", "Error!", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		
