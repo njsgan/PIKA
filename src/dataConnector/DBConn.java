@@ -192,7 +192,6 @@ public class DBConn {
 		    	for(int i = 0; i<itemIDs.length-1; i++) {
 		    		trx.addItem(itemIDs[i].toString(), Integer.parseInt(itemPrices[i].toString()), Integer.parseInt(itemQTYs[i].toString()));
 		    	}
-		    	System.out.println(cashier);
 		    	Container.transactionHistory.add(trx);
 		    	
 		    }

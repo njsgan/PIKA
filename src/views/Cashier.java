@@ -42,6 +42,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeListenerProxy;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -276,6 +279,24 @@ public class Cashier extends JFrame {
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
+		// Listen to change on amount payment [KEMBALIAN]
+		
+//		PropertyChangeListener l = new PropertyChangeListener() {
+//
+//			@Override
+//			public void propertyChange(PropertyChangeEvent evt) {
+//				Integer pembayaran = Integer.parseInt(textField_1.getText());
+//				Integer total = 0;
+//				for(Purchase purchase : purchases) {
+//					total += purchase.getItem().getPrice() * purchase.getQty();
+//				}
+//				// TODO Auto-generated method stub
+//				Integer kembalian = pembayaran - total;
+//			}
+//	    };
+//	    
+//	    textField_1.addPropertyChangeListener("value", l);
+		
 		JLabel lblReturn = new JLabel("Return");
 		lblReturn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		lblReturn.setBounds(414, 527, 64, 23);
@@ -480,7 +501,7 @@ public class Cashier extends JFrame {
 				if(!purchases.isEmpty()) {
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ddMMyyyy-HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
-					String trxID = "TRX"+cashier.getUsername()+dtf.format(now).toString();
+					String trxID = "TRX"+cashier.getUsername().toUpperCase()+dtf.format(now).toString();
 					Transaction trx = new Transaction(trxID, cashier);
 					for(Purchase purchase : purchases) {
 						trx.addPurchase(purchase);
