@@ -132,6 +132,30 @@ public class DBConn {
 		}
 	}
 	
+	public static User findSpvID(String spvid){
+		try {
+			//create connection
+			String myDriver = "com.mysql.jdbc.Driver";
+		    String myUrl = "jdbc:mysql://localhost/pikapos";
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    //query
+		    String query = "SELECT * FROM users WHERE spvID = '"+spvid+"'";
+		    
+		    Statement st = conn.createStatement();
+		    ResultSet rs = st.executeQuery(query);
+		    while (rs.next()) {
+		    	// TODO : menentukan dimana ID ditaro, getnya name paling biar bisa keluar msgbox nama (ala ala aja)
+		    }
+		    return null;
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+		return null;
+	}
+	
 	private static Item findItem(String id) {
 		for(Item item : Container.items) {
 			if (item.getCode().equals(id)) return item;
