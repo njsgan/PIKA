@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -54,6 +55,8 @@ import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JTextPane;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class Cashier extends JFrame {
 
@@ -64,12 +67,15 @@ public class Cashier extends JFrame {
 	private JFormattedTextField textField_1;
 	private JFormattedTextField txtQty;
 	private JLabel lblTotalBottom;
+	private NumberFormat formatTotal = NumberFormat.getIntegerInstance();
 	private NumberFormat format = NumberFormat.getIntegerInstance();
     private NumberFormatter formatter = new NumberFormatter(format);
 	
 	private ArrayList<Purchase> purchases = new ArrayList<Purchase>();
 	
-	private JTextField fieldBox = new JTextField(10);
+	private JTextField fieldBox = new JTextField();
+	private JPasswordField fieldBoxPswd = new JPasswordField();;
+	
 	private Company company = DBConn.readData();
 
 	/**
@@ -101,10 +107,13 @@ public class Cashier extends JFrame {
 	    centerPanel.setLayout(new GridLayout(3, 2, 5, 5));
 
 	    JLabel labelBox = new JLabel("Supervisor ID : ");
+	    JLabel labelBoxPswd = new JLabel("Password : ");
 
 	    // TODO : Focus ke FieldBox 
 	    centerPanel.add(labelBox);
 	    centerPanel.add(fieldBox);
+	    centerPanel.add(labelBoxPswd);
+	    centerPanel.add(fieldBoxPswd);
 	    
 
 	    basePanel.add(centerPanel);
@@ -148,7 +157,7 @@ public class Cashier extends JFrame {
 		for(Purchase purchase : purchases) {
 			total += purchase.getItem().getPrice() * purchase.getQty();
 		}
-		lblTotalBottom.setText(total.toString());
+		lblTotalBottom.setText(formatTotal.format(total));
 	}
 	
 	private void UpdatePurchaseList() {
@@ -195,13 +204,13 @@ public class Cashier extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
-		addWindowListener(new java.awt.event.WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
-				DBConn.UpdateTrxDB();
-			}
-		});
+//		addWindowListener(new java.awt.event.WindowAdapter() {
+//			@Override
+//			public void windowClosing(WindowEvent e) {
+//				// TODO Auto-generated method stub
+//				DBConn.UpdateTrxDB();
+//			}
+//		});
 		
 		
 		JLabel lblCashier = new JLabel("Cashier :");
@@ -258,9 +267,9 @@ public class Cashier extends JFrame {
 		
 		scrollPane_1.setViewportView(purchasesList);
 		
-		JLabel lblTotal_1 = new JLabel("Total");
+		JLabel lblTotal_1 = new JLabel("Total : Rp.");
 		lblTotal_1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblTotal_1.setBounds(414, 465, 72, 20);
+		lblTotal_1.setBounds(556, 11, 105, 20);
 		contentPane.add(lblTotal_1);
 		
 		JLabel lblPay = new JLabel("Pay");
@@ -305,9 +314,9 @@ public class Cashier extends JFrame {
 		lblReturn.setBounds(414, 527, 64, 23);
 		contentPane.add(lblReturn);
 		
-		lblTotalBottom = new JLabel("Rp. 0");
-		lblTotalBottom.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblTotalBottom.setBounds(480, 465, 88, 20);
+		lblTotalBottom = new JLabel("0");
+		lblTotalBottom.setFont(new Font("Segoe UI", Font.BOLD, 55));
+		lblTotalBottom.setBounds(556, 42, 244, 48);
 		contentPane.add(lblTotalBottom);
 		
 		JLabel lblReturnValue = new JLabel("Rp. 0");
@@ -363,21 +372,26 @@ public class Cashier extends JFrame {
 		JLabel lblNamaPerusahaanJeleque = new JLabel(company.getName());
 		lblNamaPerusahaanJeleque.setFont(new Font("Segoe UI", Font.BOLD, 24));
 		lblNamaPerusahaanJeleque.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNamaPerusahaanJeleque.setBounds(178, 0, 603, 39);
+		lblNamaPerusahaanJeleque.setBounds(178, 0, 390, 39);
 		contentPane.add(lblNamaPerusahaanJeleque);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(178, 37, 602, 2);
+		separator_1.setBounds(178, 37, 373, 2);
 		contentPane.add(separator_1);
 		
 		JLabel lblNewLabel_1 = new JLabel("<html>\r\n"+ company.getAddress() +"<br/>\r\nPhone : "+ company.getPhone() +", Fax : "+company.getFax()+"\r\n</html>");
-		lblNewLabel_1.setBounds(178, 41, 603, 30);
+		lblNewLabel_1.setBounds(178, 41, 390, 30);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblRp = new JLabel("Rp.");
 		lblRp.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		lblRp.setBounds(480, 499, 30, 23);
 		contentPane.add(lblRp);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"CASH", "DEBIT", "CREDIT"}));
+		comboBox.setBounds(414, 465, 211, 20);
+		contentPane.add(comboBox);
 		
 		
 		//find item when clicked
@@ -480,9 +494,11 @@ public class Cashier extends JFrame {
 			
 				// TODO : Check DB ID Supervisor
 				int rowIndex = purchasesList.getSelectedRow();
+				String spvID = fieldBox.getText();
+				String spvPass = fieldBoxPswd.getText(); // TODO : Password gamau kebaca
 				if(rowIndex != -1){
-					Integer boxSPV = JOptionPane.showConfirmDialog(null, getPanel(), "Call a Supervisor to Remove", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		    	    if(fieldBox.getText().equals("MMK")){
+					Integer boxSPV = JOptionPane.showConfirmDialog(null, getPanel(), "Call a Supervisor to Remove", JOptionPane.OK_CANCEL_OPTION);
+					if(DBConn.isSPV(spvID,spvPass)){
 						Purchase selected = findItemToDelete(purchasesList.getValueAt(rowIndex, 0).toString());
 						// TODO : Revert back stock to its initial stock
 						selected.getItem().setStock(selected.getItem().getStock()+selected.getQty());
@@ -491,10 +507,11 @@ public class Cashier extends JFrame {
 						UpdatePurchaseList();
 						SetTotal();
 		    	    }else if(boxSPV == JOptionPane.OK_OPTION){
+		    	    	System.out.println(spvPass);
 		    	    	JOptionPane.showMessageDialog(null, "Not a supervisor", "Error!", JOptionPane.ERROR_MESSAGE);
 		    	    }
 				}else{
-					JOptionPane.showMessageDialog(null, "Not product selected", "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "No product selected", "Error!", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -502,7 +519,7 @@ public class Cashier extends JFrame {
 		btnCheckout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!purchases.isEmpty()) {
-					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ddMMyyyy-HH:mm:ss");
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
 					LocalDateTime now = LocalDateTime.now();
 					String trxID = "TRX"+cashier.getUsername().toUpperCase()+dtf.format(now).toString();
 					Transaction trx = new Transaction(trxID, cashier);
@@ -515,6 +532,7 @@ public class Cashier extends JFrame {
 					SetTotal();
 					UpdateList();
 					DBConn.UpdateItemDB();
+					DBConn.UpdateTrxDB();
 				}
 			}
 		});

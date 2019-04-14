@@ -24,8 +24,6 @@ import javax.swing.Box;
 import javax.swing.JSeparator;
 import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
@@ -42,27 +40,6 @@ public class Login {
 	 * Launch the application.
 	 */
 	
-    public static String md5(String password) {
-        final byte[] defaultBytes = password.getBytes();
-        try {
-            final MessageDigest md5MsgDigest = MessageDigest.getInstance("MD5");
-            md5MsgDigest.reset();
-            md5MsgDigest.update(defaultBytes);
-            final byte messageDigest[] = md5MsgDigest.digest();
-            final StringBuffer hexString = new StringBuffer();
-            for (final byte element : messageDigest) {
-                final String hex = Integer.toHexString(0xFF & element);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-            password = hexString + "";
-        } catch (final NoSuchAlgorithmException nsae) {
-            nsae.printStackTrace();
-        }
-        return password;
-    }
     
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -169,7 +146,7 @@ public class Login {
 				String username = txtUsername.getText();
 				
 				try {
-				User loggedIn = DBConn.login(username, md5(password));
+				User loggedIn = DBConn.login(username, password);
 				if(loggedIn instanceof UserCashier ) UserAction((UserCashier)loggedIn);
 				else if (loggedIn instanceof UserSupervisor) UserAction((UserSupervisor)loggedIn);
 				}
@@ -202,7 +179,7 @@ public class Login {
 		lblNewLabel_2.setBounds(165, 11, 125, 60);
 		frame.getContentPane().add(lblNewLabel_2);
 		
-		JLabel lblV = new JLabel("v. 0.1");
+		JLabel lblV = new JLabel("v. 0.03");
 		lblV.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblV.setBounds(394, 217, 46, 14);
 		frame.getContentPane().add(lblV);

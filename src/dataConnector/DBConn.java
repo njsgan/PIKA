@@ -1,6 +1,8 @@
 package dataConnector;
 
 import java.awt.List;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -20,16 +22,39 @@ import dataContainer.Container;
 
 public class DBConn {
 	
+	 public static String md5(String password) {
+	        final byte[] defaultBytes = password.getBytes();
+	        try {
+	            final MessageDigest md5MsgDigest = MessageDigest.getInstance("MD5");
+	            md5MsgDigest.reset();
+	            md5MsgDigest.update(defaultBytes);
+	            final byte messageDigest[] = md5MsgDigest.digest();
+	            final StringBuffer hexString = new StringBuffer();
+	            for (final byte element : messageDigest) {
+	                final String hex = Integer.toHexString(0xFF & element);
+	                if (hex.length() == 1) {
+	                    hexString.append('0');
+	                }
+	                hexString.append(hex);
+	            }
+	            password = hexString + "";
+	        } catch (final NoSuchAlgorithmException nsae) {
+	            nsae.printStackTrace();
+	        }
+	        return password;
+	    }
+	
 	public static User login(String username, String password) {
 		try {
 			//create connection
+			String encrypted = md5(password);
 			String myDriver = "com.mysql.jdbc.Driver";
 		    String myUrl = "jdbc:mysql://localhost/pikapos";
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		    
 		    //query
-		    String query = "SELECT * FROM users where username = '"+username+"' and password = '"+password+"'";
+		    String query = "SELECT * FROM users where username = '"+username+"' and password = '"+encrypted+"'";
 		    
 		    Statement st = conn.createStatement();
 		    ResultSet rs = st.executeQuery(query);
@@ -162,28 +187,29 @@ public class DBConn {
 		}
 	}
 	
-	public static User findSpvID(String spvid){
+	public static boolean isSPV(String spvid, String password){
 		try {
 			//create connection
+			String encrypted = md5(password);
 			String myDriver = "com.mysql.jdbc.Driver";
 		    String myUrl = "jdbc:mysql://localhost/pikapos";
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		    
 		    //query
-		    String query = "SELECT * FROM users WHERE spvID = '"+spvid+"'";
+		    String query = "SELECT * FROM users WHERE UID = '"+spvid+"' AND password = '"+encrypted+"'AND status = 2";
 		    
 		    Statement st = conn.createStatement();
 		    ResultSet rs = st.executeQuery(query);
 		    while (rs.next()) {
-		    	// TODO : menentukan dimana ID ditaro, getnya name paling biar bisa keluar msgbox nama (ala ala aja)
+		    	return true;
 		    }
-		    return null;
+		    return false;
 		} catch (Exception e) {
 			System.err.println("Got an exception! ");
 		    System.err.println(e.getMessage());
 		}
-		return null;
+		return false;
 	}
 	
 	private static Item findItem(String id) {
