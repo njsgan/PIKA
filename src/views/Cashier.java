@@ -64,12 +64,13 @@ public class Cashier extends JFrame {
 	private JTextField txtFind;
 	private JTable itemList;
 	private JTable purchasesList;
-	private JFormattedTextField textField_1;
+	private JFormattedTextField textFieldPay;
 	private JFormattedTextField txtQty;
 	private JLabel lblTotalBottom;
 	private NumberFormat formatTotal = NumberFormat.getIntegerInstance();
 	private NumberFormat format = NumberFormat.getIntegerInstance();
     private NumberFormatter formatter = new NumberFormatter(format);
+    private Integer total = 0;
 	
 	private ArrayList<Purchase> purchases = new ArrayList<Purchase>();
 	
@@ -153,7 +154,7 @@ public class Cashier extends JFrame {
 	}
 	
 	private void SetTotal() {
-		Integer total = 0;
+		total = 0;
 		for(Purchase purchase : purchases) {
 			total += purchase.getItem().getPrice() * purchase.getQty();
 		}
@@ -279,17 +280,18 @@ public class Cashier extends JFrame {
 		
 		format.setGroupingUsed(false);
 		formatter.setValueClass(Integer.class);
-	    formatter.setMinimum(1);
+	    formatter.setMinimum(0);
 	    formatter.setMaximum(Integer.MAX_VALUE);
 	    formatter.setAllowsInvalid(false);
 	    // If you want the value to be committed on each keystroke instead of focus lost
 	    formatter.setCommitsOnValidEdit(true);
 	    
-		textField_1 = new JFormattedTextField(formatter);
-		textField_1.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		textField_1.setBounds(520, 500, 105, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		textFieldPay = new JFormattedTextField(formatter);
+		textFieldPay.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		textFieldPay.setBounds(520, 500, 105, 20);
+		contentPane.add(textFieldPay);
+		textFieldPay.setColumns(10);
+		
 		
 		// Listen to change on amount payment [KEMBALIAN]
 		
@@ -321,8 +323,27 @@ public class Cashier extends JFrame {
 		
 		JLabel lblReturnValue = new JLabel("Rp. 0");
 		lblReturnValue.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblReturnValue.setBounds(479, 527, 72, 23);
+		lblReturnValue.setBounds(479, 527, 146, 23);
 		contentPane.add(lblReturnValue);
+		
+		textFieldPay.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				String payment = textFieldPay.getText().toString();
+				if(textFieldPay.getText()==null) payment = "0";
+				Integer pay = Integer.parseInt(payment);
+				if((pay-total) > 0) lblReturnValue.setText("Rp. "+(pay-total));
+			}
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+					textFieldPay.setText(null);
+					lblReturnValue.setText("-");
+				}
+			}
+		});
 		
 		JLabel lblQty = new JLabel("Qty   :");
 		lblQty.setFont(new Font("Segoe UI", Font.PLAIN, 30));
@@ -392,6 +413,23 @@ public class Cashier extends JFrame {
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"CASH", "DEBIT", "CREDIT"}));
 		comboBox.setBounds(414, 465, 211, 20);
 		contentPane.add(comboBox);
+		comboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox comboBox = (JComboBox) e.getSource();
+				
+				Object selected = comboBox.getSelectedItem();
+				
+				if(selected.equals("CASH")) {
+					textFieldPay.setEditable(true);
+				}
+				else {
+					textFieldPay.setEditable(false);
+				}
+				
+			}
+		});
 		
 		
 		//find item when clicked
