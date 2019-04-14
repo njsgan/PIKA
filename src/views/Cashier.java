@@ -51,6 +51,7 @@ import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
@@ -67,7 +68,7 @@ public class Cashier extends JFrame {
 	private JFormattedTextField textFieldPay;
 	private JFormattedTextField txtQty;
 	private JLabel lblTotalBottom;
-	private NumberFormat formatTotal = NumberFormat.getIntegerInstance();
+	private NumberFormat formatTotal = NumberFormat.getIntegerInstance(Locale.GERMAN);
 	private NumberFormat format = NumberFormat.getIntegerInstance();
     private NumberFormatter formatter = new NumberFormatter(format);
     private Integer total = 0;
@@ -78,6 +79,7 @@ public class Cashier extends JFrame {
 	private JPasswordField fieldBoxPswd = new JPasswordField();;
 	
 	private Company company = DBConn.readData();
+	private JTextField txtMember;
 
 	/**
 	 * Launch the application.
@@ -199,7 +201,7 @@ public class Cashier extends JFrame {
 		setResizable(false);
 		setTitle("PiKA Point-of-Sales");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 816, 600);
+		setBounds(100, 100, 816, 670);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -216,31 +218,31 @@ public class Cashier extends JFrame {
 		
 		JLabel lblCashier = new JLabel("Cashier :");
 		lblCashier.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		lblCashier.setBounds(30, 82, 72, 21);
+		lblCashier.setBounds(566, 11, 72, 21);
 		contentPane.add(lblCashier);
 		
 		JLabel lblName = new JLabel(cashier.getFname());
 		lblName.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
-		lblName.setBounds(112, 82, 178, 21);
+		lblName.setBounds(565, 37, 178, 21);
 		contentPane.add(lblName);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 107, 864, 10);
+		separator.setBounds(0, 179, 864, 10);
 		contentPane.add(separator);
 		
 		txtFind = new JTextField();
 		txtFind.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		txtFind.setBounds(10, 121, 296, 20);
+		txtFind.setBounds(10, 198, 296, 20);
 		contentPane.add(txtFind);
 		txtFind.setColumns(10);
 		
 		JButton btnFind = new JButton("Find");
 		btnFind.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		btnFind.setBounds(316, 120, 64, 23);
+		btnFind.setBounds(316, 197, 64, 23);
 		contentPane.add(btnFind);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 152, 367, 289);
+		scrollPane.setBounds(10, 229, 367, 289);
 		contentPane.add(scrollPane);
 
 		//items list table here
@@ -257,11 +259,11 @@ public class Cashier extends JFrame {
 		
 		JLabel lblListBelanja = new JLabel("Purchased Item(s)  :");
 		lblListBelanja.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		lblListBelanja.setBounds(414, 122, 189, 14);
+		lblListBelanja.setBounds(414, 199, 189, 14);
 		contentPane.add(lblListBelanja);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(414, 152, 367, 289);
+		scrollPane_1.setBounds(414, 229, 367, 289);
 		contentPane.add(scrollPane_1);
 		
 		purchasesList = new JTable();
@@ -270,12 +272,12 @@ public class Cashier extends JFrame {
 		
 		JLabel lblTotal_1 = new JLabel("Total : Rp.");
 		lblTotal_1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblTotal_1.setBounds(556, 11, 105, 20);
+		lblTotal_1.setBounds(37, 82, 105, 20);
 		contentPane.add(lblTotal_1);
 		
 		JLabel lblPay = new JLabel("Pay");
 		lblPay.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblPay.setBounds(414, 496, 46, 20);
+		lblPay.setBounds(414, 573, 46, 20);
 		contentPane.add(lblPay);
 		
 		format.setGroupingUsed(false);
@@ -288,7 +290,7 @@ public class Cashier extends JFrame {
 	    
 		textFieldPay = new JFormattedTextField(formatter);
 		textFieldPay.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		textFieldPay.setBounds(520, 500, 105, 20);
+		textFieldPay.setBounds(520, 577, 105, 20);
 		contentPane.add(textFieldPay);
 		textFieldPay.setColumns(10);
 		
@@ -313,17 +315,17 @@ public class Cashier extends JFrame {
 		
 		JLabel lblReturn = new JLabel("Return");
 		lblReturn.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblReturn.setBounds(414, 527, 64, 23);
+		lblReturn.setBounds(414, 604, 64, 23);
 		contentPane.add(lblReturn);
 		
 		lblTotalBottom = new JLabel("0");
-		lblTotalBottom.setFont(new Font("Segoe UI", Font.BOLD, 55));
-		lblTotalBottom.setBounds(556, 42, 244, 48);
+		lblTotalBottom.setFont(new Font("Segoe UI", Font.BOLD, 60));
+		lblTotalBottom.setBounds(36, 113, 519, 55);
 		contentPane.add(lblTotalBottom);
 		
 		JLabel lblReturnValue = new JLabel("Rp. 0");
 		lblReturnValue.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblReturnValue.setBounds(479, 527, 146, 23);
+		lblReturnValue.setBounds(479, 604, 146, 23);
 		contentPane.add(lblReturnValue);
 		
 		textFieldPay.addKeyListener(new KeyAdapter() {
@@ -333,13 +335,13 @@ public class Cashier extends JFrame {
 				String payment = textFieldPay.getText().toString();
 				if(textFieldPay.getText()==null) payment = "0";
 				Integer pay = Integer.parseInt(payment);
-				if((pay-total) > 0) lblReturnValue.setText("Rp. "+(pay-total));
+				if((pay-total) > 0) lblReturnValue.setText("Rp. "+formatTotal.format(pay-total));
 			}
 			
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-					textFieldPay.setText(null);
+					textFieldPay.setValue(null);
 					lblReturnValue.setText("-");
 				}
 			}
@@ -347,13 +349,13 @@ public class Cashier extends JFrame {
 		
 		JLabel lblQty = new JLabel("Qty   :");
 		lblQty.setFont(new Font("Segoe UI", Font.PLAIN, 30));
-		lblQty.setBounds(10, 505, 88, 48);
+		lblQty.setBounds(10, 582, 88, 48);
 		contentPane.add(lblQty);
 		
 	    txtQty = new JFormattedTextField(formatter);
 		txtQty.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		txtQty.setText("1");
-		txtQty.setBounds(114, 511, 105, 39);
+		txtQty.setBounds(114, 588, 105, 39);
 		contentPane.add(txtQty);
 		txtQty.setColumns(10);
 		
@@ -363,13 +365,13 @@ public class Cashier extends JFrame {
 		btnAdd.setBackground(new Color(0, 0, 51));
 		btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		
-		btnAdd.setBounds(240, 467, 135, 84);
+		btnAdd.setBounds(240, 544, 135, 84);
 		contentPane.add(btnAdd);
 		
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		
-		btnRemove.setBounds(698, 120, 83, 23);
+		btnRemove.setBounds(698, 197, 83, 23);
 		contentPane.add(btnRemove);
 		
 		JButton btnCheckout = new JButton("Checkout");
@@ -377,12 +379,12 @@ public class Cashier extends JFrame {
 		btnCheckout.setBackground(new Color(0, 0, 51));
 		btnCheckout.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		
-		btnCheckout.setBounds(650, 465, 131, 84);
+		btnCheckout.setBounds(650, 542, 131, 84);
 		contentPane.add(btnCheckout);
 		
 		JLabel lblItemName = new JLabel("No item selected..");
 		lblItemName.setFont(new Font("Segoe UI", Font.PLAIN, 27));
-		lblItemName.setBounds(10, 467, 220, 39);
+		lblItemName.setBounds(10, 544, 220, 39);
 		contentPane.add(lblItemName);
 		
 		JLabel lblNewLabel = new JLabel("");
@@ -406,13 +408,43 @@ public class Cashier extends JFrame {
 		
 		JLabel lblRp = new JLabel("Rp.");
 		lblRp.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblRp.setBounds(480, 499, 30, 23);
+		lblRp.setBounds(480, 576, 30, 23);
 		contentPane.add(lblRp);
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"CASH", "DEBIT", "CREDIT"}));
-		comboBox.setBounds(414, 465, 211, 20);
+		comboBox.setBounds(414, 542, 211, 20);
 		contentPane.add(comboBox);
+		
+		JLabel lblMemberId = new JLabel("Member ID :");
+		lblMemberId.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		lblMemberId.setBounds(566, 69, 105, 21);
+		contentPane.add(lblMemberId);
+		
+		txtMember = new JTextField();
+		txtMember.setBounds(566, 97, 215, 30);
+		contentPane.add(txtMember);
+		txtMember.setColumns(10);
+		
+		JLabel lblMemberName = new JLabel("Non Member");
+		lblMemberName.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		lblMemberName.setBounds(566, 138, 131, 14);
+		contentPane.add(lblMemberName);
+		
+		JButton btnMember = new JButton("Apply");
+		btnMember.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		btnMember.setBounds(709, 138, 72, 23);
+		contentPane.add(btnMember);
+		
+		JLabel lblPoint = new JLabel("Point :");
+		lblPoint.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		lblPoint.setBounds(566, 154, 46, 14);
+		contentPane.add(lblPoint);
+		
+		JLabel lblPointValue = new JLabel("0");
+		lblPointValue.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		lblPointValue.setBounds(625, 153, 46, 14);
+		contentPane.add(lblPointValue);
 		comboBox.addActionListener(new ActionListener() {
 			
 			@Override
