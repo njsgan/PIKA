@@ -245,7 +245,8 @@ public class DBConn {
 		    	
 		    	TransactionHistory trx = new TransactionHistory(trxID, cashier);
 		    	
-		    	for(int i = 0; i<itemIDs.length-1; i++) {
+		    	for(int i = 0; i<itemIDs.length; i++) {
+		    		System.out.println(itemPrices[i].toString() + "#" + itemQTYs[i].toString());
 		    		trx.addItem(itemIDs[i].toString(), Integer.parseInt(itemPrices[i].toString()), Integer.parseInt(itemQTYs[i].toString()));
 		    	}
 		    	Container.transactionHistory.add(trx);
