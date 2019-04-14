@@ -11,6 +11,7 @@ import javax.swing.table.TableModel;
 import javax.swing.text.NumberFormatter;
 
 import assets.Item;
+import assets.Company;
 import assets.Purchase;
 import assets.Transaction;
 import assets.User;
@@ -69,6 +70,7 @@ public class Cashier extends JFrame {
 	private ArrayList<Purchase> purchases = new ArrayList<Purchase>();
 	
 	private JTextField fieldBox = new JTextField(10);
+	private Company company = DBConn.readData();
 
 	/**
 	 * Launch the application.
@@ -180,6 +182,7 @@ public class Cashier extends JFrame {
 		}
 		return null;
 	}
+	
 	
 	public Cashier(UserCashier cashier) {
 //		AddItems();
@@ -357,7 +360,7 @@ public class Cashier extends JFrame {
 		lblNewLabel.setBounds(37, 11, 131, 60);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNamaPerusahaanJeleque = new JLabel("NAMA PERUSAHAAN");
+		JLabel lblNamaPerusahaanJeleque = new JLabel(company.getName());
 		lblNamaPerusahaanJeleque.setFont(new Font("Segoe UI", Font.BOLD, 24));
 		lblNamaPerusahaanJeleque.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNamaPerusahaanJeleque.setBounds(178, 0, 603, 39);
@@ -367,7 +370,7 @@ public class Cashier extends JFrame {
 		separator_1.setBounds(178, 37, 602, 2);
 		contentPane.add(separator_1);
 		
-		JLabel lblNewLabel_1 = new JLabel("<html>\r\nJl. Alamat Perusahaan no. Nomor Rumah Perusahaan, Bantul, D.I.Y.<br/>\r\nPhone : +62 69696969\r\n</html>");
+		JLabel lblNewLabel_1 = new JLabel("<html>\r\n"+ company.getAddress() +"<br/>\r\nPhone : "+ company.getPhone() +", Fax : "+company.getFax()+"\r\n</html>");
 		lblNewLabel_1.setBounds(178, 41, 603, 30);
 		contentPane.add(lblNewLabel_1);
 		

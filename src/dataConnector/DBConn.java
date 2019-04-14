@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import assets.Item;
+import assets.Company;
 import assets.Purchase;
 import assets.Transaction;
 import assets.TransactionHistory;
@@ -43,6 +44,35 @@ public class DBConn {
 		    	Integer status = rs.getInt("status");
 		    	if(status == 1) return new UserCashier(fname, lname, address, phone, age, status, user_name, pass_word);
 		    	else if (status == 2) return new UserSupervisor(fname, lname, address, phone, age, status, user_name, pass_word);
+		    }
+		    return null;
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+		return null;
+	}
+	
+	public static Company readData(){
+		try {
+			//create connection
+			String myDriver = "com.mysql.jdbc.Driver";
+		    String myUrl = "jdbc:mysql://localhost/pikapos";
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    //query
+		    String query = "SELECT * FROM company";
+		    
+		    Statement st = conn.createStatement();
+		    ResultSet rs = st.executeQuery(query);
+		    while (rs.next()) {
+		    	String name = rs.getString("name");
+		    	String address = rs.getString("address");
+		    	String logo = rs.getString("logo");
+		    	String phone = rs.getString("phone");
+		    	String fax = rs.getString("fax");
+		    	return new Company(name, address, logo, phone, fax);
 		    }
 		    return null;
 		} catch (Exception e) {

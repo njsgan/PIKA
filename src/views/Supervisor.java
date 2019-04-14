@@ -8,10 +8,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import assets.Company;
 import assets.Item;
 import assets.Transaction;
 import assets.TransactionHistory;
 import assets.UserSupervisor;
+import dataConnector.DBConn;
 import dataContainer.Container;
 
 import javax.swing.JLabel;
@@ -27,6 +29,7 @@ public class Supervisor extends JFrame {
 	private JPanel contentPane;
 	private JTable itemsList;
 	private JTable transactionsList;
+	private Company company = DBConn.readData();
 
 	/**
 	 * Launch the application.
@@ -122,17 +125,17 @@ public class Supervisor extends JFrame {
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(Supervisor.class.getResource("/views/pika10025.png")));
-		label.setBounds(28, 14, 131, 60);
+		label.setBounds(28, 25, 125, 60);
 		contentPane.add(label);
 		
-		JLabel label_1 = new JLabel("NAMA PERUSAHAAN");
+		JLabel label_1 = new JLabel(company.getName());
 		label_1.setHorizontalAlignment(SwingConstants.LEFT);
 		label_1.setFont(new Font("Segoe UI", Font.BOLD, 24));
-		label_1.setBounds(169, 11, 603, 39);
+		label_1.setBounds(169, 14, 603, 39);
 		contentPane.add(label_1);
 		
-		JLabel label_2 = new JLabel("<html>\r\nJl. Alamat Perusahaan no. Nomor Rumah Perusahaan, Bantul, D.I.Y.<br/>\r\nPhone : +62 69696969\r\n</html>");
-		label_2.setBounds(169, 52, 603, 30);
+		JLabel label_2 = new JLabel("<html>\r\n"+ company.getAddress() +"<br/>\r\nPhone : "+ company.getPhone() +", Fax : "+company.getFax()+"\r\n</html>");
+		label_2.setBounds(169, 55, 603, 30);
 		contentPane.add(label_2);
 		
 		JSeparator separator = new JSeparator();
