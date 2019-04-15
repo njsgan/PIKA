@@ -100,6 +100,7 @@ public class NewMember extends JFrame {
 				Cashier.setTxtMember(UID);
 				Container.memberList.add(newMember);
 				DBConn.NewMember(newMember);
+				DBConn.UpdateMembers();
 			}
 		});
 		btnSubmit.setBounds(15, 384, 398, 144);

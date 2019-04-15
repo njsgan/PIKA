@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 import assets.Company;
 import assets.Item;
+import assets.Member;
 import assets.Transaction;
 import assets.TransactionHistory;
 import assets.UserSupervisor;
@@ -34,6 +35,7 @@ public class Supervisor extends JFrame {
 	private static JTable itemsList;
 	private JTable transactionsList;
 	private Company company = DBConn.readData();
+	private static JTable membersList;
 
 	/**
 	 * Launch the application.
@@ -92,10 +94,31 @@ public class Supervisor extends JFrame {
 			tableModel.addRow(obj);
 		}
 	}
+	
+	public static void UpdateMembersList() {
+		String col[] = {"UID", "Name", "Phone", "Address", "Point"};
+		DefaultTableModel tableModel = new DefaultTableModel(col, 0){
+			public boolean isCellEditable(int row, int column)
+		    {
+		      return false;//This causes all cells to be not editable
+		    }
+		};
+		membersList.setModel(tableModel);
+		//adding items :)
+		for(Member member : Container.memberList) {
+			String UID = member.getUID();
+			String name = member.getName();
+			String phone = member.getPhone();
+			String address = member.getAddress();
+			Integer point = member.getPoint();
+			Object[] obj = {UID, name, phone, address, point};
+			tableModel.addRow(obj);
+		}
+	}
 	public Supervisor(UserSupervisor supervisor) {
 		setTitle("PiKA Point-of-Sales | Supervisor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 816, 600);
+		setBounds(100, 100, 1300, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -107,15 +130,15 @@ public class Supervisor extends JFrame {
 		contentPane.add(lblGreeting);
 		
 		JLabel lblItemsList = new JLabel("Items List");
-		lblItemsList.setBounds(28, 114, 83, 14);
+		lblItemsList.setBounds(30, 172, 83, 14);
 		contentPane.add(lblItemsList);
 		
 		JLabel lblTransactionsList = new JLabel("Transactions List");
-		lblTransactionsList.setBounds(421, 114, 110, 14);
+		lblTransactionsList.setBounds(423, 172, 163, 14);
 		contentPane.add(lblTransactionsList);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(28, 139, 359, 411);
+		scrollPane.setBounds(30, 197, 359, 411);
 		contentPane.add(scrollPane);
 		
 		itemsList = new JTable();
@@ -134,7 +157,7 @@ public class Supervisor extends JFrame {
 		});
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(421, 139, 369, 411);
+		scrollPane_1.setBounds(423, 197, 369, 411);
 		contentPane.add(scrollPane_1);
 		
 		transactionsList = new JTable();
@@ -182,11 +205,36 @@ public class Supervisor extends JFrame {
 				}
 			}
 		});
-		btnNewItem.setBounds(272, 107, 115, 29);
+		btnNewItem.setBounds(274, 165, 115, 29);
 		contentPane.add(btnNewItem);
+		
+		JLabel lblMembersList = new JLabel("Members List");
+		lblMembersList.setBounds(832, 169, 125, 20);
+		contentPane.add(lblMembersList);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(842, 197, 421, 411);
+		contentPane.add(scrollPane_2);
+		
+		membersList = new JTable();
+		scrollPane_2.setViewportView(membersList);
+		membersList.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					int rowIndex = membersList.getSelectedRow();
+					Member selected = Container.memberList.get(rowIndex);
+					MemberDetail memberDetail = new MemberDetail(selected);
+					memberDetail.setVisible(true);
+				} catch (Exception e3) {}
+			}
+		});
+		
+		
 		setLocationRelativeTo(null);
 		
 		updateItemList();
 		updateTransactionList();
+		UpdateMembersList();
 	}
 }

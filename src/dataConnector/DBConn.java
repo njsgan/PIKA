@@ -260,6 +260,25 @@ public class DBConn {
 		}
 	}
 	
+	public static void UpdateMembers() {
+		try {
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    
+		    Statement st = conn.createStatement();
+		    
+		    for(Member member : Container.memberList) {
+		    	st.executeUpdate("UPDATE member set UID = '"+member.getUID()+"', name = '"+member.getName()+"', address = '"+member.getAddress()+"', phone = '"+member.getPhone()+"', point = '"+member.getPoint()+"'WHERE UID = '"+member.getUID()+"'");
+		    }
+		    
+		    
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+	}
+	
 	public static void addMembers() {
 		try {
 		    Class.forName(myDriver);
@@ -352,7 +371,6 @@ public class DBConn {
 		    	TransactionHistory trx = new TransactionHistory(trxID, cashier);
 		    	
 		    	for(int i = 0; i<itemIDs.length; i++) {
-		    		System.out.println(itemPrices[i].toString() + "#" + itemQTYs[i].toString());
 		    		trx.addItem(itemIDs[i].toString(), Integer.parseInt(itemPrices[i].toString()), Integer.parseInt(itemQTYs[i].toString()));
 		    	}
 		    	Container.transactionHistory.add(trx);

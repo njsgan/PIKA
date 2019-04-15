@@ -149,9 +149,15 @@ public class Login {
 				User loggedIn = DBConn.login(username, password);
 				if(loggedIn instanceof UserCashier ) UserAction((UserCashier)loggedIn);
 				else if (loggedIn instanceof UserSupervisor) UserAction((UserSupervisor)loggedIn);
+				else {
+					JOptionPane.showMessageDialog(null, "invalid login", "Error Logging In!", JOptionPane.ERROR_MESSAGE);
+					txtPassword.setText(null);
+					txtUsername.setText(null);
+					txtUsername.requestFocus();
+				}
 				}
 				catch(Exception args) {
-					JOptionPane.showMessageDialog(null, "invalid login", "Error Logging In!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Contact IT Support (for geeks only :))", "Error !!!", JOptionPane.ERROR_MESSAGE);
 					txtPassword.setText(null);
 					txtUsername.setText(null);
 				}
