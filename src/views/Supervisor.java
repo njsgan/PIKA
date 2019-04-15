@@ -28,9 +28,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class Supervisor extends JFrame {
-
+	
 	private JPanel contentPane;
 	private static JTable itemsList;
 	private JTable transactionsList;
@@ -126,7 +129,7 @@ public class Supervisor extends JFrame {
 		
 		JLabel lblGreeting = new JLabel("Welcome, "+supervisor.getFname());
 		lblGreeting.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		lblGreeting.setBounds(28, 85, 359, 24);
+		lblGreeting.setBounds(30, 130, 359, 24);
 		contentPane.add(lblGreeting);
 		
 		JLabel lblItemsList = new JLabel("Items List");
@@ -178,21 +181,15 @@ public class Supervisor extends JFrame {
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(Supervisor.class.getResource("/views/pika10025.png")));
-		label.setBounds(28, 25, 125, 60);
+		label.setBounds(30, 46, 125, 60);
 		contentPane.add(label);
 		
-		JLabel label_1 = new JLabel(company.getName());
-		label_1.setHorizontalAlignment(SwingConstants.LEFT);
-		label_1.setFont(new Font("Segoe UI", Font.BOLD, 24));
-		label_1.setBounds(169, 14, 603, 39);
-		contentPane.add(label_1);
-		
 		JLabel label_2 = new JLabel("<html>\r\n"+ company.getAddress() +"<br/>\r\nPhone : "+ company.getPhone() +", Fax : "+company.getFax()+"\r\n</html>");
-		label_2.setBounds(169, 48, 603, 39);
+		label_2.setBounds(181, 72, 505, 39);
 		contentPane.add(label_2);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(169, 48, 602, 2);
+		separator.setBounds(175, 72, 602, 2);
 		contentPane.add(separator);
 		
 		JButton btnNewItem = new JButton("New Item");
@@ -218,6 +215,31 @@ public class Supervisor extends JFrame {
 		
 		membersList = new JTable();
 		scrollPane_2.setViewportView(membersList);
+		
+		JLabel label_1 = new JLabel(company.getName());
+		label_1.setHorizontalAlignment(SwingConstants.LEFT);
+		label_1.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		label_1.setBounds(181, 32, 623, 39);
+		contentPane.add(label_1);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 1274, 21);
+		contentPane.add(menuBar);
+		
+		JMenu mnNewMenu = new JMenu("Account");
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mntmSignOut = new JMenuItem("Sign Out");
+		mnNewMenu.add(mntmSignOut);
+			
+		mntmSignOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Login loginScreen = new Login();
+				//TODO : manggil login lagi
+			}
+		});
+		
 		membersList.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -229,6 +251,7 @@ public class Supervisor extends JFrame {
 				} catch (Exception e3) {}
 			}
 		});
+		
 		
 		
 		setLocationRelativeTo(null);
