@@ -339,13 +339,8 @@ public class Cashier extends JFrame {
 				if(textFieldPay.getText()==null) payment = "0";
 				Integer pay = Integer.parseInt(payment);
 				if((pay-total) > 0) lblReturnValue.setText("Rp. "+formatTotal.format(pay-total));
-			}
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-					textFieldPay.setValue(null);
-					lblReturnValue.setText("-");
+				if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+					textFieldPay.selectAll();
 				}
 			}
 		});
@@ -616,21 +611,29 @@ public class Cashier extends JFrame {
 			
 				// TODO : Check DB ID Supervisor
 				int rowIndex = purchasesList.getSelectedRow();
-				String spvID = fieldBox.getText();
-				String spvPass = fieldBoxPswd.getText(); // TODO : Password gamau kebaca
+				 // TODO : Password gamau kebaca
 				if(rowIndex != -1){
 					Integer boxSPV = JOptionPane.showConfirmDialog(null, getPanel(), "Call a Supervisor to Remove", JOptionPane.OK_CANCEL_OPTION);
-					if(DBConn.isSPV(spvID,spvPass)){
-						Purchase selected = findItemToDelete(purchasesList.getValueAt(rowIndex, 0).toString());
-						// TODO : Revert back stock to its initial stock
-						selected.getItem().setStock(selected.getItem().getStock()+selected.getQty());
-						purchases.remove(selected);
-						UpdateList();
-						UpdatePurchaseList();
-						SetTotal();
-		    	    }else if(boxSPV == JOptionPane.OK_OPTION){
-		    	    	System.out.println(spvPass);
-		    	    	JOptionPane.showMessageDialog(null, "Not a supervisor", "Error!", JOptionPane.ERROR_MESSAGE);
+					fieldBox.requestFocus();
+					if(boxSPV == JOptionPane.OK_OPTION){
+						String spvID = fieldBox.getText();
+						String spvPass = fieldBoxPswd.getText();
+						if(DBConn.isSPV(spvID, spvPass)) {
+							Purchase selected = findItemToDelete(purchasesList.getValueAt(rowIndex, 0).toString());
+							// TODO : Revert back stock to its initial stock
+							selected.getItem().setStock(selected.getItem().getStock()+selected.getQty());
+							purchases.remove(selected);
+							UpdateList();
+							UpdatePurchaseList();
+							SetTotal();
+							fieldBox.setText(null);
+							fieldBox.setText(null);
+						}
+						else{
+			    	    	System.out.println(fieldBox.getText());
+			    	    	System.out.println(fieldBoxPswd.getText());
+			    	    	JOptionPane.showMessageDialog(null, "Not a supervisor", "Error!", JOptionPane.ERROR_MESSAGE);
+			    	    }
 		    	    }
 				}else{
 					JOptionPane.showMessageDialog(null, "No product selected", "Error!", JOptionPane.ERROR_MESSAGE);

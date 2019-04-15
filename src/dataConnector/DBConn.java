@@ -150,6 +150,23 @@ public class DBConn {
 		}
 	}
 	
+	public static void InsertItemtoDB(String code, String name, Integer price, Integer stock) {
+		try {
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    
+		    Statement st = conn.createStatement();
+		    
+		    st.executeUpdate("INSERT INTO items (code,name,price,stock) VALUES ('"+code+"','"+name+"','"+price+"','"+stock+"')");
+		    
+		    
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+	}
+	
 	public static void UpdateTrxDB() {
 		try {
 		    Class.forName(myDriver);

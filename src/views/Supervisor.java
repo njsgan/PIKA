@@ -23,11 +23,14 @@ import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Supervisor extends JFrame {
 
 	private JPanel contentPane;
-	private JTable itemsList;
+	private static JTable itemsList;
 	private JTable transactionsList;
 	private Company company = DBConn.readData();
 
@@ -50,7 +53,7 @@ public class Supervisor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	private void updateItemList() {
+	public static void updateItemList() {
 		String col[] = {"Code", "Name", "Price", "Stock"};
 		DefaultTableModel tableModel = new DefaultTableModel(col, 0){
 			public boolean isCellEditable(int row, int column)
@@ -69,6 +72,7 @@ public class Supervisor extends JFrame {
 			tableModel.addRow(obj);
 		}
 	}
+	
 	
 	private void updateTransactionList() {
 		String col[] = {"TrxID", "Cashier", "Revenue"};
@@ -102,7 +106,7 @@ public class Supervisor extends JFrame {
 		contentPane.add(lblGreeting);
 		
 		JLabel lblItemsList = new JLabel("Items List");
-		lblItemsList.setBounds(28, 114, 46, 14);
+		lblItemsList.setBounds(28, 114, 83, 14);
 		contentPane.add(lblItemsList);
 		
 		JLabel lblTransactionsList = new JLabel("Transactions List");
@@ -135,12 +139,25 @@ public class Supervisor extends JFrame {
 		contentPane.add(label_1);
 		
 		JLabel label_2 = new JLabel("<html>\r\n"+ company.getAddress() +"<br/>\r\nPhone : "+ company.getPhone() +", Fax : "+company.getFax()+"\r\n</html>");
-		label_2.setBounds(169, 55, 603, 30);
+		label_2.setBounds(169, 48, 603, 39);
 		contentPane.add(label_2);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(169, 48, 602, 2);
 		contentPane.add(separator);
+		
+		JButton btnNewItem = new JButton("New Item");
+		btnNewItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AddItem addItem = new AddItem();
+				addItem.setVisible(true);
+				if(addItem.isActive()==false) {
+					updateItemList();
+				}
+			}
+		});
+		btnNewItem.setBounds(272, 107, 115, 29);
+		contentPane.add(btnNewItem);
 		setLocationRelativeTo(null);
 		
 		updateItemList();
