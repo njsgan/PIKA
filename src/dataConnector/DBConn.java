@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import assets.Item;
+import assets.Member;
 import assets.Company;
 import assets.Purchase;
 import assets.Transaction;
@@ -21,6 +22,9 @@ import assets.UserSupervisor;
 import dataContainer.Container;
 
 public class DBConn {
+	
+	private static String myDriver = "com.mysql.jdbc.Driver";
+    private static String myUrl = "jdbc:mysql://localhost/pikapos";
 	
 	 public static String md5(String password) {
 	        final byte[] defaultBytes = password.getBytes();
@@ -46,10 +50,7 @@ public class DBConn {
 	
 	public static User login(String username, String password) {
 		try {
-			//create connection
 			String encrypted = md5(password);
-			String myDriver = "com.mysql.jdbc.Driver";
-		    String myUrl = "jdbc:mysql://localhost/pikapos";
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		    
@@ -80,9 +81,7 @@ public class DBConn {
 	
 	public static Company readData(){
 		try {
-			//create connection
-			String myDriver = "com.mysql.jdbc.Driver";
-		    String myUrl = "jdbc:mysql://localhost/pikapos";
+
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		    
@@ -109,9 +108,6 @@ public class DBConn {
 	
 	public static void addItems() {
 		try {
-			//create connection
-			String myDriver = "com.mysql.jdbc.Driver";
-		    String myUrl = "jdbc:mysql://localhost/pikapos";
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		    
@@ -137,9 +133,6 @@ public class DBConn {
 	
 	public static void UpdateItemDB() {
 		try {
-			//create connection
-			String myDriver = "com.mysql.jdbc.Driver";
-		    String myUrl = "jdbc:mysql://localhost/pikapos";
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		    
@@ -159,9 +152,6 @@ public class DBConn {
 	
 	public static void UpdateTrxDB() {
 		try {
-			//create connection
-			String myDriver = "com.mysql.jdbc.Driver";
-		    String myUrl = "jdbc:mysql://localhost/pikapos";
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		    
@@ -187,12 +177,58 @@ public class DBConn {
 		}
 	}
 	
+	public static boolean isMember(String uid){
+		try {
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    //query
+		    String query = "SELECT * FROM member WHERE UID = '"+uid+"'";
+		    
+		    Statement st = conn.createStatement();
+		    ResultSet rs = st.executeQuery(query);
+		    
+		    while (rs.next()) {
+		    	 return true;
+		    }
+		    return false;
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+		return false;
+	};
+	
+	public static Member dataMember(String uid){
+		try {
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    //query
+		    String query = "SELECT * FROM member WHERE UID = '"+uid+"'";
+		    
+		    Statement st = conn.createStatement();
+		    ResultSet rs = st.executeQuery(query);
+		    
+		    while (rs.next()) {
+		    	String name = rs.getString("name");
+		    	String UID = rs.getString("UID");
+		    	String address = rs.getString("address");;
+		    	String phone = rs.getString("phone");
+		    	Integer point = rs.getInt("point");
+		    	return new Member(name, UID, address, phone, point);
+		    }
+		    return null;
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+		return null;
+	}
+	
 	public static boolean isSPV(String spvid, String password){
 		try {
-			//create connection
 			String encrypted = md5(password);
-			String myDriver = "com.mysql.jdbc.Driver";
-		    String myUrl = "jdbc:mysql://localhost/pikapos";
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		    
@@ -221,9 +257,6 @@ public class DBConn {
 	
 	public static void addPurchases() {
 		try {
-			//create connection
-			String myDriver = "com.mysql.jdbc.Driver";
-		    String myUrl = "jdbc:mysql://localhost/pikapos";
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		    
@@ -263,9 +296,6 @@ public class DBConn {
 	public DBConn() {
 		 try
 		    {
-		      // create our mysql database connection
-			  String myDriver = "com.mysql.jdbc.Driver";
-		      String myUrl = "jdbc:mysql://localhost/PIKA";
 		      Class.forName(myDriver);
 		      Connection conn = DriverManager.getConnection(myUrl, "root", "");
 		      

@@ -7,11 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.NumberFormatter;
 
 import assets.Item;
+import assets.Member;
 import assets.Company;
 import assets.Purchase;
 import assets.Transaction;
@@ -505,6 +508,49 @@ public class Cashier extends JFrame {
 				}
 		    }
 		};
+		
+		// search member
+		AbstractAction actionMember = new AbstractAction(){
+			 @Override
+			    public void actionPerformed(ActionEvent e)
+			    {
+			    	String UID = txtMember.getText();
+					if(DBConn.isMember(UID)) {
+						Member member = DBConn.dataMember(UID);
+						lblMemberName.setText(member.getName());
+						lblPointValue.setText(member.getPoint().toString());
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Not a Member!", "Data not found!", JOptionPane.ERROR_MESSAGE);
+					}
+			    }
+		};
+		
+		txtMember.addActionListener(actionMember);
+		btnMember.addActionListener(actionMember);
+		txtMember.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				reset();
+				
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				reset();		
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				reset();
+			}
+			
+			public void reset(){
+				lblMemberName.setText("Non member");
+				lblPointValue.setText("0");
+			}
+		});
 		
 		//AddQty With Enter
 		AbstractAction actionATC = new AbstractAction()
