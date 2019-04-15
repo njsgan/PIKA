@@ -533,12 +533,12 @@ public class Cashier extends JFrame {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				reset();
-				
+								
 			}
 			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				reset();		
+				reset();
 			}
 			
 			@Override
@@ -549,6 +549,12 @@ public class Cashier extends JFrame {
 			public void reset(){
 				lblMemberName.setText("Non member");
 				lblPointValue.setText("0");
+				String UID = txtMember.getText();
+				if(DBConn.isMember(UID)) {
+					Member member = DBConn.dataMember(UID);
+					lblMemberName.setText(member.getName());
+					lblPointValue.setText(member.getPoint().toString());
+				}
 			}
 		});
 		
