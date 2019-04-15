@@ -140,7 +140,7 @@ public class DBConn {
 		    Statement st = conn.createStatement();
 		    
 		    for(Item item : Container.items) {
-		    	st.executeUpdate("UPDATE items set stock = '"+item.getStock()+"' WHERE code = '"+item.getCode()+"'");
+		    	st.executeUpdate("UPDATE items set stock = '"+item.getStock()+"', name = '"+item.getName()+"', price = '"+item.getPrice()+"' WHERE code = '"+item.getCode()+"'");
 		    }
 		    
 		    

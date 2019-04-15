@@ -61,6 +61,16 @@ public class TransactionHistory {
 		}
 		return total;
 	}
+	
+	
+
+	public ArrayList<Integer> getQtys() {
+		return qtys;
+	}
+
+	public void setQtys(ArrayList<Integer> qtys) {
+		this.qtys = qtys;
+	}
 
 	public TransactionHistory() {
 		// TODO Auto-generated constructor stub

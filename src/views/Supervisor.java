@@ -25,6 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
 public class Supervisor extends JFrame {
@@ -119,6 +120,18 @@ public class Supervisor extends JFrame {
 		
 		itemsList = new JTable();
 		scrollPane.setViewportView(itemsList);
+		itemsList.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					int rowIndex = itemsList.getSelectedRow();
+					Item selected = Container.items.get(rowIndex);
+					ItemDetails detail = new ItemDetails(selected);
+					detail.setVisible(true);
+				}
+				catch(Exception ee) {}
+			}
+		});
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(421, 139, 369, 411);
@@ -126,6 +139,19 @@ public class Supervisor extends JFrame {
 		
 		transactionsList = new JTable();
 		scrollPane_1.setViewportView(transactionsList);
+		
+		//click on transaction
+		transactionsList.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					int rowIndex = transactionsList.getSelectedRow();
+					TransactionHistory selected = Container.transactionHistory.get(rowIndex);
+					TransactionDetails trxDetail = new TransactionDetails(selected);
+					trxDetail.setVisible(true);
+				} catch (Exception e2) {}
+			}
+		});
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(Supervisor.class.getResource("/views/pika10025.png")));
