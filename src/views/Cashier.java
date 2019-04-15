@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Robot;
 
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -86,7 +87,10 @@ public class Cashier extends JFrame {
 	
 	private Company company = DBConn.readData();
 	private static JTextField txtMember;
-	private static JButton btnMember;
+	private static JMenuItem mntmAddNewMember;
+	private static JLabel lblMemberName;
+	private static JLabel lblPointValue;
+	
 
 	/**
 	 * Launch the application.
@@ -133,10 +137,18 @@ public class Cashier extends JFrame {
 	}
 	
 	//set txtMember right after registration
-	public static void setTxtMember(String UID) {
+	public static void setTxtMember(String UID, String name) {
+		txtMember.requestFocus();
 		txtMember.setText(UID);
-		btnMember.setEnabled(false);
-		
+		mntmAddNewMember.setEnabled(false);
+		//simulate space to update name
+		try {
+			Robot robot = new Robot();
+			robot.keyPress(KeyEvent.VK_SPACE);
+			robot.keyRelease(KeyEvent.VK_SPACE);
+			robot.keyPress(KeyEvent.VK_BACK_SPACE);
+			robot.keyRelease(KeyEvent.VK_BACK_SPACE);
+		} catch (Exception e) {};
 	}
 	
 	private void AddItems() {
@@ -434,28 +446,17 @@ public class Cashier extends JFrame {
 		contentPane.add(txtMember);
 		txtMember.setColumns(10);
 		
-		JLabel lblMemberName = new JLabel("Non Member");
+		lblMemberName = new JLabel("Non Member");
 		lblMemberName.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		lblMemberName.setBounds(566, 171, 105, 14);
 		contentPane.add(lblMemberName);
-		
-		btnMember = new JButton("New Member");
-		btnMember.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				NewMember memberRegistration = new NewMember();
-				memberRegistration.setVisible(true);
-			}
-		});
-		btnMember.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		btnMember.setBounds(676, 171, 105, 23);
-		contentPane.add(btnMember);
 		
 		JLabel lblPoint = new JLabel("Point :");
 		lblPoint.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		lblPoint.setBounds(566, 187, 46, 14);
 		contentPane.add(lblPoint);
 		
-		JLabel lblPointValue = new JLabel("0");
+		lblPointValue = new JLabel("0");
 		lblPointValue.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		lblPointValue.setBounds(625, 186, 46, 14);
 		contentPane.add(lblPointValue);
@@ -469,12 +470,27 @@ public class Cashier extends JFrame {
 		
 		JMenuItem mntmSignOut = new JMenuItem("Sign Out");
 		mnAccount.add(mntmSignOut);
+		mntmSignOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				Login loginScreen = new Login();
+				//TODO : manggil login lagi
+				loginScreen.frame.setVisible(true);
+			}
+		});
 		
 		JMenu mnNewMenu = new JMenu("Member");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmAddNewMember = new JMenuItem("Add New Member");
+		mntmAddNewMember = new JMenuItem("Add New Member");
 		mnNewMenu.add(mntmAddNewMember);
+		mntmAddNewMember.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				NewMember memberRegistration = new NewMember();
+				memberRegistration.setVisible(true);
+			}
+		});
+		
 		comboBox.addActionListener(new ActionListener() {
 			
 			@Override
@@ -573,7 +589,7 @@ public class Cashier extends JFrame {
 			}
 			
 			public void reset(){
-				lblMemberName.setText("Non member");
+				lblMemberName.setText("Non Member");
 				lblPointValue.setText("0");
 				String UID = txtMember.getText();
 				if(DBConn.isMember(UID)) {
@@ -689,8 +705,8 @@ public class Cashier extends JFrame {
 					UpdateList();
 					DBConn.UpdateItemDB();
 					DBConn.UpdateTrxDB();
-					btnMember.setEnabled(true);
 					txtMember.setText(null);
+					mntmAddNewMember.setEnabled(true);
 				}
 			}
 		});

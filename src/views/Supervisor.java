@@ -237,6 +237,7 @@ public class Supervisor extends JFrame {
 				dispose();
 				Login loginScreen = new Login();
 				//TODO : manggil login lagi
+				loginScreen.frame.setVisible(true);
 			}
 		});
 		

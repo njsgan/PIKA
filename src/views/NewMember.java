@@ -97,7 +97,7 @@ public class NewMember extends JFrame {
 				String UID = newMember.getUID();
 				dispose();
 				JOptionPane.showMessageDialog(null, "New member for "+name+" is successful with UID : "+UID	, "Member Registration Successful", JOptionPane.INFORMATION_MESSAGE);
-				Cashier.setTxtMember(UID);
+				Cashier.setTxtMember(UID, name);
 				Container.memberList.add(newMember);
 				DBConn.NewMember(newMember);
 				DBConn.UpdateMembers();
