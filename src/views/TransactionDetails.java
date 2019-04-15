@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import assets.TransactionHistory;
+import dataConnector.DBConn;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -80,7 +81,7 @@ public class TransactionDetails extends JFrame {
 		contentPane.add(scrollPane);
 		
 		detailsList = new JTable();
-		String[] col = {"Item", "Price", "Quantity", "Total"};
+		String[] col = {"Item", "Name", "Price", "Quantity", "Total"};
 		DefaultTableModel tableModel = new DefaultTableModel(col,0) {
 			public boolean isCellEditable(int row, int column)
 		    {
@@ -93,7 +94,8 @@ public class TransactionDetails extends JFrame {
 			Integer price = trx.getPrices().get(i);
 			Integer qty = trx.getQtys().get(i);
 			Integer total = price*qty;
-			Object[] obj = {item, price, qty, total};
+			String name = DBConn.getItemNameFromDB(item);
+			Object[] obj = {item, name, price, qty, total};
 			tableModel.addRow(obj);
 		}
 		scrollPane.setViewportView(detailsList);

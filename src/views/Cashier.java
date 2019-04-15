@@ -82,7 +82,8 @@ public class Cashier extends JFrame {
 	private JPasswordField fieldBoxPswd = new JPasswordField();;
 	
 	private Company company = DBConn.readData();
-	private JTextField txtMember;
+	private static JTextField txtMember;
+	private static JButton btnMember;
 
 	/**
 	 * Launch the application.
@@ -126,6 +127,13 @@ public class Cashier extends JFrame {
 
 
 	    return basePanel;
+	}
+	
+	//set txtMember right after registration
+	public static void setTxtMember(String UID) {
+		txtMember.setText(UID);
+		btnMember.setEnabled(false);
+		
 	}
 	
 	private void AddItems() {
@@ -200,7 +208,6 @@ public class Cashier extends JFrame {
 	
 	
 	public Cashier(UserCashier cashier) {
-//		AddItems();
 		setResizable(false);
 		setTitle("PiKA Point-of-Sales");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -426,12 +433,18 @@ public class Cashier extends JFrame {
 		
 		JLabel lblMemberName = new JLabel("Non Member");
 		lblMemberName.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		lblMemberName.setBounds(566, 138, 131, 14);
+		lblMemberName.setBounds(566, 138, 105, 14);
 		contentPane.add(lblMemberName);
 		
-		JButton btnMember = new JButton("Apply");
+		btnMember = new JButton("New Member");
+		btnMember.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				NewMember memberRegistration = new NewMember();
+				memberRegistration.setVisible(true);
+			}
+		});
 		btnMember.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		btnMember.setBounds(709, 138, 72, 23);
+		btnMember.setBounds(676, 138, 105, 23);
 		contentPane.add(btnMember);
 		
 		JLabel lblPoint = new JLabel("Point :");
@@ -522,7 +535,6 @@ public class Cashier extends JFrame {
 		};
 		
 		txtMember.addActionListener(actionMember);
-		btnMember.addActionListener(actionMember);
 		txtMember.getDocument().addDocumentListener(new DocumentListener() {
 			
 			@Override
@@ -658,6 +670,8 @@ public class Cashier extends JFrame {
 					UpdateList();
 					DBConn.UpdateItemDB();
 					DBConn.UpdateTrxDB();
+					btnMember.setEnabled(true);
+					txtMember.setText(null);
 				}
 			}
 		});

@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import assets.Item;
+import dataConnector.DBConn;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -109,6 +110,7 @@ public class ItemDetails extends JFrame {
 				item.setPrice(newPrice);
 				item.setStock(newStock);
 				Supervisor.updateItemList();
+				DBConn.UpdateItemDB();
 				dispose();
 			}
 		});

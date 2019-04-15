@@ -1,5 +1,7 @@
 package assets;
 
+import java.util.Random;
+
 public class Member {
 	
 	private String name;
@@ -8,6 +10,8 @@ public class Member {
 	private String phone;
 	private Integer point;
 	
+	Random rand = new Random();
+	
 	public Member(String name, String uID, String address, String phone, Integer point) {
 		super();
 		this.name = name;
@@ -15,6 +19,20 @@ public class Member {
 		this.address = address;
 		this.phone = phone;
 		this.point = point;
+	}
+	
+	public Member(String name, String address, String phone) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.phone = phone;
+		this.point = 0;
+		//generate UID
+		String ID = "MEM";
+		for(int i = 1; i<=12; i++) {
+			ID+=rand.nextInt(9);
+		}
+		this.UID = ID;
 	}
 
 	public String getName() {

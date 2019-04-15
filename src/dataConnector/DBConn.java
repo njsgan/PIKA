@@ -243,6 +243,48 @@ public class DBConn {
 		return null;
 	}
 	
+	public static void NewMember(Member member) {
+		try {
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    
+		    Statement st = conn.createStatement();
+		    
+		    st.executeUpdate("INSERT INTO member (UID,name,address,phone,point) VALUES ('"+member.getUID()+"','"+member.getName()+"','"+member.getAddress()+"','"+member.getPhone()+"','"+member.getPoint()+"')");
+		    
+		    
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+	}
+	
+	public static void addMembers() {
+		try {
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    //query
+		    String query = "SELECT * FROM member";
+		    
+		    Statement st = conn.createStatement();
+		    ResultSet rs = st.executeQuery(query);
+		    
+		    while (rs.next()) {
+		    	String name = rs.getString("name");
+		    	String UID = rs.getString("UID");
+		    	String address = rs.getString("address");;
+		    	String phone = rs.getString("phone");
+		    	Integer point = rs.getInt("point");
+		    	Container.memberList.add(new Member(name, UID, address, phone, point));
+		    }
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+	}
+	
 	public static boolean isSPV(String spvid, String password){
 		try {
 			String encrypted = md5(password);
@@ -265,9 +307,23 @@ public class DBConn {
 		return false;
 	}
 	
-	private static Item findItem(String id) {
-		for(Item item : Container.items) {
-			if (item.getCode().equals(id)) return item;
+	public static String getItemNameFromDB(String code) {
+		try {
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    //query
+		    String query = "SELECT name FROM items WHERE code = '"+code+"'";
+		    
+		    Statement st = conn.createStatement();
+		    ResultSet rs = st.executeQuery(query);
+		    while (rs.next()) {
+		    	return rs.getString("name");
+		    }
+		    return null;
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
 		}
 		return null;
 	}

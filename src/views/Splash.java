@@ -66,8 +66,8 @@ public class Splash {
 	            progressBar.setIndeterminate(true);
 	            lblConn.setText("Connecting Database...");
 	            DBConn.addItems();
-	            //todo : load transactions
 	            DBConn.addPurchases();
+	            DBConn.addMembers();
 	            return null;
 	        }
 
