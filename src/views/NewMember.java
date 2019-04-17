@@ -47,6 +47,7 @@ public class NewMember extends JFrame {
 	 * Create the frame.
 	 */
 	public NewMember() {
+		setTitle("PiKA Point-of-Sales | Add Member");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 600);
 		contentPane = new JPanel();
@@ -54,7 +55,7 @@ public class NewMember extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblAddNewMember = new JLabel("ADD NEW MEMBER");
+		JLabel lblAddNewMember = new JLabel("Please fill the form");
 		lblAddNewMember.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		lblAddNewMember.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAddNewMember.setBounds(15, 16, 398, 37);
@@ -87,7 +88,8 @@ public class NewMember extends JFrame {
 		contentPane.add(txtPhone);
 		txtPhone.setColumns(10);
 		
-		JButton btnSubmit = new JButton("SUBMIT");
+		JButton btnSubmit = new JButton("Add Member");
+		btnSubmit.setFont(new Font("Segoe UI", Font.PLAIN, 39));
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String name = txtName.getText();

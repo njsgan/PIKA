@@ -90,6 +90,11 @@ public class Cashier extends JFrame {
 	private static JMenuItem mntmAddNewMember;
 	private static JLabel lblMemberName;
 	private static JLabel lblPointValue;
+	private static JFormattedTextField txtCardNum = new JFormattedTextField();
+	private static JFormattedTextField txtApproval = new JFormattedTextField();
+	
+	private String cardNum;
+	private String approvalCode;
 	
 
 	/**
@@ -113,7 +118,7 @@ public class Cashier extends JFrame {
 	 */
 	
 	// Box buat ID Supervisor
-	private JPanel getPanel()
+	private JPanel spvPanel()
 	{
 	    JPanel basePanel = new JPanel();
 
@@ -149,6 +154,36 @@ public class Cashier extends JFrame {
 			robot.keyPress(KeyEvent.VK_BACK_SPACE);
 			robot.keyRelease(KeyEvent.VK_BACK_SPACE);
 		} catch (Exception e) {};
+	}
+	
+	private JPanel cardPanel()
+	{
+	    JPanel basePanel = new JPanel();
+
+	    JPanel centerPanel = new JPanel();
+	    centerPanel.setLayout(new GridLayout(3, 2, 5, 5));
+
+	    JLabel labelBox = new JLabel("Card Number : ");
+	    JLabel labelBoxPswd = new JLabel("Approval Code :");
+
+	    // TODO : Focus ke FieldBox 
+	    centerPanel.add(labelBox);
+	    centerPanel.add(txtCardNum);
+	    centerPanel.add(labelBoxPswd);
+	    centerPanel.add(txtApproval);
+
+	    basePanel.add(centerPanel);
+
+
+	    return basePanel;
+	}
+	
+	private boolean validateCard(String number, String approval){
+		if(number.length()==16 && approval.length()==8){
+			// TODO : Insert card validation logic
+			return true;
+		}
+		else return false;
 	}
 	
 	private void AddItems() {
@@ -361,6 +396,7 @@ public class Cashier extends JFrame {
 				if(textFieldPay.getText()==null) payment = "0";
 				Integer pay = Integer.parseInt(payment);
 				if((pay-total) > 0) lblReturnValue.setText("Rp. "+formatTotal.format(pay-total));
+				else lblReturnValue.setText("Rp. 0");
 				if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
 					textFieldPay.selectAll();
 				}
@@ -491,23 +527,6 @@ public class Cashier extends JFrame {
 			}
 		});
 		
-		comboBox.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox comboBox = (JComboBox) e.getSource();
-				
-				Object selected = comboBox.getSelectedItem();
-				
-				if(selected.equals("CASH")) {
-					textFieldPay.setEditable(true);
-				}
-				else {
-					textFieldPay.setEditable(false);
-				}
-				
-			}
-		});
 		
 		
 		//find item when clicked
@@ -621,6 +640,7 @@ public class Cashier extends JFrame {
 				UpdatePurchaseList();		
 				SetTotal();
 				txtFind.requestFocus();
+				lblItemName.setText("No item selected..");
 		    }
 		};
 		
@@ -660,7 +680,7 @@ public class Cashier extends JFrame {
 				int rowIndex = purchasesList.getSelectedRow();
 				 // TODO : Password gamau kebaca
 				if(rowIndex != -1){
-					Integer boxSPV = JOptionPane.showConfirmDialog(null, getPanel(), "Call a Supervisor to Remove", JOptionPane.OK_CANCEL_OPTION);
+					Integer boxSPV = JOptionPane.showConfirmDialog(null, spvPanel(), "Call a Supervisor to Remove", JOptionPane.OK_CANCEL_OPTION);
 					fieldBox.requestFocus();
 					if(boxSPV == JOptionPane.OK_OPTION){
 						String spvID = fieldBox.getText();
@@ -694,7 +714,28 @@ public class Cashier extends JFrame {
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
 					LocalDateTime now = LocalDateTime.now();
 					String trxID = "TRX"+cashier.getUsername().toUpperCase()+dtf.format(now).toString();
-					Transaction trx = new Transaction(trxID, cashier);
+					Transaction trx;
+					Object selected = comboBox.getSelectedItem();
+					String memID = txtMember.getText();
+					if(selected.equals("CASH")){
+						trx = DBConn.isMember(memID) ? new Transaction(trxID, cashier) : new Transaction(trxID, cashier, memID);
+					}else{
+						Integer boxCard = JOptionPane.showConfirmDialog(null, cardPanel(), "Enter Card Details", JOptionPane.OK_CANCEL_OPTION);
+						txtCardNum.requestFocus();
+						if(boxCard == JOptionPane.OK_OPTION){
+							cardNum = txtCardNum.getText();
+							approvalCode = txtApproval.getText();
+							if(!validateCard(cardNum,approvalCode)) {
+								cardNum = "";
+								approvalCode = "";
+				    	    	JOptionPane.showMessageDialog(null, "Not a valid card / approval code! [16/8]", "Error! - PiKA POS", JOptionPane.ERROR_MESSAGE);
+				    	    }else{
+				    	    	JOptionPane.showMessageDialog(null, "Successfully paid!", "Thank you! - PiKA POS", JOptionPane.INFORMATION_MESSAGE);
+				    	    }
+			    	    }
+						trx = DBConn.isMember(memID) ? new Transaction(trxID, cashier, memID, cardNum, approvalCode)
+								:  new Transaction(trxID, cashier, cardNum, approvalCode);
+					}
 					for(Purchase purchase : purchases) {
 						trx.addPurchase(purchase);
 					}
@@ -704,10 +745,37 @@ public class Cashier extends JFrame {
 					SetTotal();
 					UpdateList();
 					DBConn.UpdateItemDB();
-					DBConn.UpdateTrxDB();
+					DBConn.addMemberPoint(total*0.10);
+					if(!validateCard(cardNum, approvalCode)){
+						DBConn.UpdateTrxDB(false);
+					}else{
+						DBConn.UpdateTrxDB(true);
+					}
 					txtMember.setText(null);
 					mntmAddNewMember.setEnabled(true);
+				}else{
+					JOptionPane.showMessageDialog(null, "No product in cart!", "Error! - PiKA POS", JOptionPane.ERROR_MESSAGE);
 				}
+			}
+		});
+		
+		comboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox comboBox = (JComboBox) e.getSource();
+				
+				Object selected = comboBox.getSelectedItem();
+				
+				if(selected.equals("CASH")) {
+					textFieldPay.setEditable(true);
+				}
+				else {
+					// DEBIT CREDIT
+					textFieldPay.setEditable(false);	
+					textFieldPay.setValue(null);
+				}
+				
 			}
 		});
 	}

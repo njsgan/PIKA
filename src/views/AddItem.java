@@ -47,14 +47,15 @@ public class AddItem extends JFrame {
 	 * Create the frame.
 	 */
 	public AddItem() {
-		setBounds(100, 100, 450, 600);
+		setTitle("PiKA Point-of-Sales | Supervisor - Add New Item(s)");
+		setBounds(100, 100, 450, 535);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		JLabel lblAddNewItem = new JLabel("ADD NEW ITEM");
+		JLabel lblAddNewItem = new JLabel("Please fill this form");
 		lblAddNewItem.setFont(new Font("Segoe UI", Font.PLAIN, 31));
 		lblAddNewItem.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAddNewItem.setBounds(15, 16, 398, 52);
@@ -67,40 +68,40 @@ public class AddItem extends JFrame {
 		
 		JLabel lblItemName = new JLabel("Item Name");
 		lblItemName.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		lblItemName.setBounds(15, 201, 138, 20);
+		lblItemName.setBounds(15, 176, 138, 20);
 		contentPane.add(lblItemName);
 		
 		JLabel lblPrice = new JLabel("Price");
 		lblPrice.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		lblPrice.setBounds(15, 299, 69, 20);
+		lblPrice.setBounds(15, 244, 69, 20);
 		contentPane.add(lblPrice);
 		
 		JLabel lblStock = new JLabel("Stock");
 		lblStock.setFont(new Font("Segoe UI", Font.PLAIN, 22));
-		lblStock.setBounds(15, 396, 69, 20);
+		lblStock.setBounds(15, 312, 69, 20);
 		contentPane.add(lblStock);
 		
 		txtCode = new JTextField();
-		txtCode.setBounds(15, 148, 398, 26);
+		txtCode.setBounds(15, 139, 398, 26);
 		contentPane.add(txtCode);
 		txtCode.setColumns(10);
 		
 		txtName = new JTextField();
-		txtName.setBounds(15, 242, 398, 26);
+		txtName.setBounds(15, 207, 398, 26);
 		contentPane.add(txtName);
 		txtName.setColumns(10);
 		
 		txtPrice = new JTextField();
-		txtPrice.setBounds(15, 343, 398, 26);
+		txtPrice.setBounds(15, 275, 398, 26);
 		contentPane.add(txtPrice);
 		txtPrice.setColumns(10);
 		
 		txtStock = new JTextField();
-		txtStock.setBounds(15, 437, 398, 26);
+		txtStock.setBounds(15, 343, 398, 26);
 		contentPane.add(txtStock);
 		txtStock.setColumns(10);
 		
-		JButton btnAdd = new JButton("Add");
+		JButton btnAdd = new JButton("Add Once");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String code = txtCode.getText();
@@ -113,10 +114,10 @@ public class AddItem extends JFrame {
 				dispose();
 			}
 		});
-		btnAdd.setBounds(79, 499, 115, 29);
+		btnAdd.setBounds(15, 400, 193, 76);
 		contentPane.add(btnAdd);
 		
-		JButton btnAddNew = new JButton("Add New");
+		JButton btnAddNew = new JButton("Add More");
 		btnAddNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String code = txtCode.getText();
@@ -132,7 +133,7 @@ public class AddItem extends JFrame {
 				txtStock.setText(null);
 			}
 		});
-		btnAddNew.setBounds(230, 499, 115, 29);
+		btnAddNew.setBounds(220, 400, 193, 76);
 		contentPane.add(btnAddNew);
 	}
 }

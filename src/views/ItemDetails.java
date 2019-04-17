@@ -46,8 +46,9 @@ public class ItemDetails extends JFrame {
 	 * Create the frame.
 	 */
 	public ItemDetails(Item item) {
+		setTitle("PiKA Point-of-Sales | Supervisor - Modify Items");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 600);
+		setBounds(100, 100, 450, 576);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -71,36 +72,36 @@ public class ItemDetails extends JFrame {
 		itemCode.setText(item.getCode());
 		
 		JLabel lblItemName = new JLabel("Item Name");
-		lblItemName.setBounds(15, 174, 133, 20);
+		lblItemName.setBounds(15, 169, 133, 20);
 		contentPane.add(lblItemName);
 		
 		itemName = new JTextField();
-		itemName.setBounds(15, 210, 398, 26);
+		itemName.setBounds(15, 200, 398, 26);
 		contentPane.add(itemName);
 		itemName.setColumns(10);
 		itemName.setText(item.getName());
 		
 		JLabel lblItemStock = new JLabel("Item Stock");
-		lblItemStock.setBounds(15, 252, 152, 20);
+		lblItemStock.setBounds(15, 237, 152, 20);
 		contentPane.add(lblItemStock);
 		
 		itemStock = new JTextField();
-		itemStock.setBounds(15, 288, 398, 26);
+		itemStock.setBounds(15, 268, 398, 26);
 		contentPane.add(itemStock);
 		itemStock.setColumns(10);
 		itemStock.setText(item.getStock().toString());
 		
 		JLabel lblItemPrice = new JLabel("Item Price");
-		lblItemPrice.setBounds(15, 330, 152, 20);
+		lblItemPrice.setBounds(15, 305, 152, 20);
 		contentPane.add(lblItemPrice);
 		
 		itemPrice = new JTextField();
-		itemPrice.setBounds(15, 366, 398, 26);
+		itemPrice.setBounds(15, 336, 398, 26);
 		contentPane.add(itemPrice);
 		itemPrice.setColumns(10);
 		itemPrice.setText(item.getPrice().toString());
 		
-		JButton btnSubmit = new JButton("SUBMIT");
+		JButton btnSubmit = new JButton("Apply Changes");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String newName = itemName.getText();
@@ -114,8 +115,8 @@ public class ItemDetails extends JFrame {
 				dispose();
 			}
 		});
-		btnSubmit.setFont(new Font("SimSun", Font.PLAIN, 38));
-		btnSubmit.setBounds(15, 408, 398, 120);
+		btnSubmit.setFont(new Font("Segoe UI", Font.PLAIN, 38));
+		btnSubmit.setBounds(15, 398, 398, 120);
 		contentPane.add(btnSubmit);
 	}
 }

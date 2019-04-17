@@ -167,7 +167,7 @@ public class DBConn {
 		}
 	}
 	
-	public static void UpdateTrxDB() {
+	public static void UpdateTrxDB(boolean card) {
 		try {
 		    Class.forName(myDriver);
 		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
@@ -184,7 +184,14 @@ public class DBConn {
 		    		itemQTYs = itemQTYs + purchase.getQty()+"#";
 		    		itemPRICEs = itemPRICEs + purchase.getItem().getPrice()+"#";
 		    	}
-		    	st.executeUpdate("INSERT INTO transactions (trxID, itemID, itemQTY, itemPRICE, sales) VALUES ('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"')");
+		    	if(card){
+		    		st.executeUpdate("INSERT INTO transactions (trxID, itemID, itemQTY, itemPRICE, sales, member, cardNum, approvalCode) VALUES "
+		    			+ "('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"','"+"','"
+				    			+transaction.getMemID()+"','"+transaction.getCardNum()+"','"+transaction.getApprovalCode()+"')");
+		    	}else{
+		    		st.executeUpdate("INSERT INTO transactions (trxID, itemID, itemQTY, itemPRICE, sales, cardNum, approvalCode) VALUES "
+			    			+ "('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"')");
+		    	}
 		    }
 		    
 		    

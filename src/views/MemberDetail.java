@@ -47,14 +47,15 @@ public class MemberDetail extends JFrame {
 	 * Create the frame.
 	 */
 	public MemberDetail(Member member) {
+		setTitle("PiKA Point-of-Sales | Supervisor - Edit Member");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 600);
+		setBounds(100, 100, 450, 548);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblMemberDetails = new JLabel("Member Details");
+		JLabel lblMemberDetails = new JLabel("Edit Member");
 		lblMemberDetails.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		lblMemberDetails.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMemberDetails.setBounds(15, 16, 398, 37);
@@ -72,7 +73,7 @@ public class MemberDetail extends JFrame {
 		txtUID.setText(member.getUID());
 		
 		JLabel lblName = new JLabel("Name");
-		lblName.setBounds(15, 136, 69, 20);
+		lblName.setBounds(15, 131, 69, 20);
 		contentPane.add(lblName);
 		
 		txtName = new JTextField();
@@ -82,36 +83,36 @@ public class MemberDetail extends JFrame {
 		txtName.setText(member.getName());
 		
 		JLabel lblPhone = new JLabel("Phone");
-		lblPhone.setBounds(15, 204, 69, 20);
+		lblPhone.setBounds(15, 197, 69, 20);
 		contentPane.add(lblPhone);
 		
 		txtPhone = new JTextField();
-		txtPhone.setBounds(15, 240, 398, 26);
+		txtPhone.setBounds(15, 228, 398, 26);
 		contentPane.add(txtPhone);
 		txtPhone.setColumns(10);
 		txtPhone.setText(member.getPhone());
 		
 		JLabel lblAddress = new JLabel("Address");
-		lblAddress.setBounds(15, 283, 69, 20);
+		lblAddress.setBounds(15, 265, 69, 20);
 		contentPane.add(lblAddress);
 		
 		txtAddress = new JTextField();
-		txtAddress.setBounds(15, 319, 398, 26);
+		txtAddress.setBounds(15, 296, 398, 26);
 		contentPane.add(txtAddress);
 		txtAddress.setColumns(10);
 		txtAddress.setText(member.getAddress());
 		
 		JLabel lblPoint = new JLabel("Point");
-		lblPoint.setBounds(15, 366, 69, 20);
+		lblPoint.setBounds(15, 333, 69, 20);
 		contentPane.add(lblPoint);
 		
 		txtPoint = new JTextField();
-		txtPoint.setBounds(15, 408, 398, 26);
+		txtPoint.setBounds(15, 364, 398, 26);
 		contentPane.add(txtPoint);
 		txtPoint.setColumns(10);
 		txtPoint.setText(member.getPhone().toString());
 		
-		JButton btnSubmit = new JButton("SUBMIT");
+		JButton btnSubmit = new JButton("Apply Changes");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				member.setName(txtName.getText());
@@ -123,8 +124,8 @@ public class MemberDetail extends JFrame {
 				dispose();
 			}
 		});
-		btnSubmit.setFont(new Font("SimSun", Font.PLAIN, 32));
-		btnSubmit.setBounds(15, 454, 398, 74);
+		btnSubmit.setFont(new Font("Segoe UI", Font.PLAIN, 32));
+		btnSubmit.setBounds(15, 420, 398, 74);
 		contentPane.add(btnSubmit);
 	}
 }
