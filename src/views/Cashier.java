@@ -676,9 +676,7 @@ public class Cashier extends JFrame {
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			
-				// TODO : Check DB ID Supervisor
 				int rowIndex = purchasesList.getSelectedRow();
-				 // TODO : Password gamau kebaca
 				if(rowIndex != -1){
 					Integer boxSPV = JOptionPane.showConfirmDialog(null, spvPanel(), "Call a Supervisor to Remove", JOptionPane.OK_CANCEL_OPTION);
 					fieldBox.requestFocus();
@@ -740,12 +738,12 @@ public class Cashier extends JFrame {
 						trx.addPurchase(purchase);
 					}
 					Container.transactions.add(trx);
+					DBConn.UpdateMemberPoint(total/10, memID);
 					purchases.clear();
 					UpdatePurchaseList();
 					SetTotal();
 					UpdateList();
 					DBConn.UpdateItemDB();
-					DBConn.addMemberPoint(total*0.10);
 					if(!validateCard(cardNum, approvalCode)){
 						DBConn.UpdateTrxDB(false);
 					}else{

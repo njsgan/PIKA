@@ -221,7 +221,8 @@ public class DBConn {
 		    System.err.println(e.getMessage());
 		}
 		return false;
-	};
+	}
+	
 	
 	public static Member dataMember(String uid){
 		try {
@@ -278,6 +279,32 @@ public class DBConn {
 		    for(Member member : Container.memberList) {
 		    	st.executeUpdate("UPDATE member set UID = '"+member.getUID()+"', name = '"+member.getName()+"', address = '"+member.getAddress()+"', phone = '"+member.getPhone()+"', point = '"+member.getPoint()+"'WHERE UID = '"+member.getUID()+"'");
 		    }
+		    
+		    
+		} catch (Exception e) {
+			System.err.println("Got an exception! ");
+		    System.err.println(e.getMessage());
+		}
+	}
+	
+	public static void UpdateMemberPoint(Integer point, String UID) {
+		try {
+		    Class.forName(myDriver);
+		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    
+		    String query = "SELECT point FROM member where UID = '"+UID+"'";
+		    Statement st = conn.createStatement();
+		    ResultSet rs = st.executeQuery(query);
+		    
+		    Integer oldPoint = 0;
+		    while(rs.next()) {
+		    	oldPoint = rs.getInt("point");
+		    }
+		    System.out.println(oldPoint);
+		    System.out.println(point);
+		    point+=oldPoint;
+		    System.out.println(oldPoint);
+		    st.executeUpdate("UPDATE member set point = '"+point+"' WHERE UID = '"+UID+"'");
 		    
 		    
 		} catch (Exception e) {
