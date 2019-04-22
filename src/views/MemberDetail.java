@@ -110,7 +110,7 @@ public class MemberDetail extends JFrame {
 		txtPoint.setBounds(15, 364, 398, 26);
 		contentPane.add(txtPoint);
 		txtPoint.setColumns(10);
-		txtPoint.setText(member.getPhone().toString());
+		txtPoint.setText(member.getPoint().toString());
 		
 		JButton btnSubmit = new JButton("Apply Changes");
 		btnSubmit.addActionListener(new ActionListener() {

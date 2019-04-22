@@ -14,5 +14,13 @@ public class Container {
 	public Container() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public static void Clear() {
+		transactions.clear();
+		items.clear();
+		transactionHistory.clear();
+		memberList.clear();
+	}
 
 }
+

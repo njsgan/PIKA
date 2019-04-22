@@ -1,14 +1,11 @@
 package dataConnector;
 
-import java.awt.List;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import assets.Item;
 import assets.Member;
@@ -25,6 +22,8 @@ public class DBConn {
 	
 	private static String myDriver = "com.mysql.jdbc.Driver";
     private static String myUrl = "jdbc:mysql://localhost/pikapos";
+    private static String user = "root";
+    private static String pass = "";
 	
 	 public static String md5(String password) {
 	        final byte[] defaultBytes = password.getBytes();
@@ -52,7 +51,7 @@ public class DBConn {
 		try {
 			String encrypted = md5(password);
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    //query
 		    String query = "SELECT * FROM users where username = '"+username+"' and password = '"+encrypted+"'";
@@ -83,7 +82,7 @@ public class DBConn {
 		try {
 
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    //query
 		    String query = "SELECT * FROM company";
@@ -109,7 +108,7 @@ public class DBConn {
 	public static void addItems() {
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    //query
 		    String query = "SELECT * FROM items ";
@@ -134,7 +133,7 @@ public class DBConn {
 	public static void UpdateItemDB() {
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    
 		    Statement st = conn.createStatement();
@@ -153,7 +152,7 @@ public class DBConn {
 	public static void InsertItemtoDB(String code, String name, Integer price, Integer stock) {
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    
 		    Statement st = conn.createStatement();
@@ -167,10 +166,10 @@ public class DBConn {
 		}
 	}
 	
-	public static void UpdateTrxDB(boolean card) {
+	public static void UpdateTrxDB(boolean card, boolean member) {
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    
 		    Statement st = conn.createStatement();
@@ -184,12 +183,26 @@ public class DBConn {
 		    		itemQTYs = itemQTYs + purchase.getQty()+"#";
 		    		itemPRICEs = itemPRICEs + purchase.getItem().getPrice()+"#";
 		    	}
-		    	if(card){
+		    	if(card && member) {
 		    		st.executeUpdate("INSERT INTO transactions (trxID, itemID, itemQTY, itemPRICE, sales, member, cardNum, approvalCode) VALUES "
-		    			+ "('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"','"+"','"
-				    			+transaction.getMemID()+"','"+transaction.getCardNum()+"','"+transaction.getApprovalCode()+"')");
-		    	}else{
+			    			+ "('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"','"+"','"
+					    			+transaction.getMemID()+"','"+transaction.getCardNum()+"','"+transaction.getApprovalCode()+"')");
+		    	}
+		    	
+		    	else if(card && !member){
 		    		st.executeUpdate("INSERT INTO transactions (trxID, itemID, itemQTY, itemPRICE, sales, cardNum, approvalCode) VALUES "
+		    			+ "('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"','"+"','"
+				    			+transaction.getCardNum()+"','"+transaction.getApprovalCode()+"')");
+		    	}
+		    	
+		    	else if(!card && member) {
+		    		System.out.println("hit");
+		    		st.executeUpdate("INSERT INTO transactions (trxID, itemID, itemQTY, itemPRICE, sales, member) VALUES "
+			    			+ "('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"','"
+					    			+transaction.getMemID()+"')");
+		    	}
+		    	else{
+		    		st.executeUpdate("INSERT INTO transactions (trxID, itemID, itemQTY, itemPRICE, sales) VALUES "
 			    			+ "('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"')");
 		    	}
 		    }
@@ -204,7 +217,7 @@ public class DBConn {
 	public static boolean isMember(String uid){
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    //query
 		    String query = "SELECT * FROM member WHERE UID = '"+uid+"'";
@@ -227,7 +240,7 @@ public class DBConn {
 	public static Member dataMember(String uid){
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    //query
 		    String query = "SELECT * FROM member WHERE UID = '"+uid+"'";
@@ -254,7 +267,7 @@ public class DBConn {
 	public static void NewMember(Member member) {
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    
 		    Statement st = conn.createStatement();
@@ -271,7 +284,7 @@ public class DBConn {
 	public static void UpdateMembers() {
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    
 		    Statement st = conn.createStatement();
@@ -290,7 +303,7 @@ public class DBConn {
 	public static void UpdateMemberPoint(Integer point, String UID) {
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    String query = "SELECT point FROM member where UID = '"+UID+"'";
 		    Statement st = conn.createStatement();
@@ -316,7 +329,7 @@ public class DBConn {
 	public static void addMembers() {
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    //query
 		    String query = "SELECT * FROM member";
@@ -342,7 +355,7 @@ public class DBConn {
 		try {
 			String encrypted = md5(password);
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    //query
 		    String query = "SELECT * FROM users WHERE UID = '"+spvid+"' AND password = '"+encrypted+"'AND status = 2";
@@ -363,7 +376,7 @@ public class DBConn {
 	public static String getItemNameFromDB(String code) {
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    //query
 		    String query = "SELECT name FROM items WHERE code = '"+code+"'";
@@ -384,7 +397,7 @@ public class DBConn {
 	public static void addPurchases() {
 		try {
 		    Class.forName(myDriver);
-		    Connection conn = DriverManager.getConnection(myUrl, "root", "");
+		    Connection conn = DriverManager.getConnection(myUrl, user, pass);
 		    
 		    String query = "SELECT * FROM transactions";
 		    Statement st = conn.createStatement();
@@ -416,45 +429,6 @@ public class DBConn {
 			System.err.println("Got an exception! ");
 		    System.err.println(e.getMessage());
 		}
-	}
-
-	public DBConn() {
-		 try
-		    {
-		      Class.forName(myDriver);
-		      Connection conn = DriverManager.getConnection(myUrl, "root", "");
-		      
-		      // our SQL SELECT query. 
-		      // if you only need a few columns, specify them by name instead of using "*"
-		      String query = "SELECT * FROM rumah";
-		      
-		      // create the java statement
-		      Statement st = conn.createStatement();
-		      
-//		      UNTUK INSERT
-//		      st.executeUpdate("INSERT INTO rumah (kode, alamat) VALUES ('DOG-123','Jl. Alam Sungai Anjing no. 26')");
-		      
-		      // execute the query, and get a java resultset
-		      ResultSet rs = st.executeQuery(query);
-		      
-		      // iterate through the java resultset
-		      while (rs.next())
-		      {
-		        int id = rs.getInt("id");
-		        String nama = rs.getString("kode");
-		        String username = rs.getString("alamat");
-
-		        
-		        // print the results
-		        System.out.format("%d, %s, %s\n", id, nama, username);
-		      }
-		      st.close();
-		    }
-		    catch (Exception e)
-		    {
-		      System.err.println("Got an exception! ");
-		      System.err.println(e.getMessage());
-		    }
 	}
 
 }

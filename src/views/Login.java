@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Font;
-import java.awt.Window;
 
 import javax.swing.SwingConstants;
 
@@ -16,14 +15,11 @@ import assets.User;
 import assets.UserCashier;
 import assets.UserSupervisor;
 import dataConnector.DBConn;
+import dataContainer.Container;
 
-import java.awt.Component;
 
 import javax.swing.AbstractAction;
-import javax.swing.Box;
 import javax.swing.JSeparator;
-import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
@@ -107,6 +103,9 @@ public class Login {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//clear local db
+		Container.Clear();
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setUndecorated(true);

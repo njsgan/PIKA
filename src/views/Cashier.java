@@ -95,6 +95,7 @@ public class Cashier extends JFrame {
 	
 	private String cardNum;
 	private String approvalCode;
+	private boolean isUseCard = false;
 	
 
 	/**
@@ -179,11 +180,15 @@ public class Cashier extends JFrame {
 	}
 	
 	private boolean validateCard(String number, String approval){
+		try {
 		if(number.length()==16 && approval.length()==8){
 			// TODO : Insert card validation logic
 			return true;
 		}
-		else return false;
+		} catch (Exception e) {
+			
+		}
+		return false;
 	}
 	
 	private void AddItems() {
@@ -414,6 +419,14 @@ public class Cashier extends JFrame {
 		txtQty.setBounds(114, 621, 105, 39);
 		contentPane.add(txtQty);
 		txtQty.setColumns(10);
+		txtQty.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+					txtQty.selectAll();
+				}
+			}
+		});
 		
 		
 		JButton btnAdd = new JButton("Add to Cart");
@@ -727,6 +740,7 @@ public class Cashier extends JFrame {
 								cardNum = "";
 								approvalCode = "";
 				    	    	JOptionPane.showMessageDialog(null, "Not a valid card / approval code! [16/8]", "Error! - PiKA POS", JOptionPane.ERROR_MESSAGE);
+				    	    	return;
 				    	    }else{
 				    	    	JOptionPane.showMessageDialog(null, "Successfully paid!", "Thank you! - PiKA POS", JOptionPane.INFORMATION_MESSAGE);
 				    	    }
@@ -744,16 +758,15 @@ public class Cashier extends JFrame {
 					SetTotal();
 					UpdateList();
 					DBConn.UpdateItemDB();
-					if(!validateCard(cardNum, approvalCode)){
-						DBConn.UpdateTrxDB(false);
-					}else{
-						DBConn.UpdateTrxDB(true);
-					}
+					boolean isMember = false;
+					if(!memID.equals(null)) isMember = true;
+					DBConn.UpdateTrxDB(isUseCard, isMember);
 					txtMember.setText(null);
 					mntmAddNewMember.setEnabled(true);
 				}else{
 					JOptionPane.showMessageDialog(null, "No product in cart!", "Error! - PiKA POS", JOptionPane.ERROR_MESSAGE);
 				}
+				isUseCard = false;
 			}
 		});
 		
@@ -772,6 +785,7 @@ public class Cashier extends JFrame {
 					// DEBIT CREDIT
 					textFieldPay.setEditable(false);	
 					textFieldPay.setValue(null);
+					isUseCard = true;
 				}
 				
 			}
