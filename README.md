@@ -3,7 +3,7 @@
 </p>
 <br/>
 
-## PiKA = aPlikasI KAsir
+# PiKA <i>[aPlikasI KAsir]</i>
 
 ## Mengapa PiKA?
 <br/>
@@ -14,3 +14,5 @@ Kami membuat PiKA untuk memenuhi tugas kami dalam Mata Kuliah COMP6175 - Object 
 	* jasyohuang (Jason Yonathan Huang)
 	* lavinske (Steven Lavinske Santosa)
 
+## Class Diagram
+![Class Diagram](ClassDiagram-PiKA.png)
