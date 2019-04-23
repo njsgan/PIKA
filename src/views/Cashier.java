@@ -79,6 +79,7 @@ public class Cashier extends JFrame {
 	private NumberFormat format = NumberFormat.getIntegerInstance();
     private NumberFormatter formatter = new NumberFormatter(format);
     private Integer total = 0;
+    private Integer pay = 0;
 	
 	private ArrayList<Purchase> purchases = new ArrayList<Purchase>();
 	
@@ -399,7 +400,7 @@ public class Cashier extends JFrame {
 				// TODO Auto-generated method stub
 				String payment = textFieldPay.getText().toString();
 				if(textFieldPay.getText()==null) payment = "0";
-				Integer pay = Integer.parseInt(payment);
+				pay = Integer.parseInt(payment);
 				if((pay-total) > 0) lblReturnValue.setText("Rp. "+formatTotal.format(pay-total));
 				else lblReturnValue.setText("Rp. 0");
 				if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
@@ -708,8 +709,6 @@ public class Cashier extends JFrame {
 							fieldBox.setText(null);
 						}
 						else{
-			    	    	System.out.println(fieldBox.getText());
-			    	    	System.out.println(fieldBoxPswd.getText());
 			    	    	JOptionPane.showMessageDialog(null, "Not a supervisor", "Error!", JOptionPane.ERROR_MESSAGE);
 			    	    }
 		    	    }
@@ -729,6 +728,10 @@ public class Cashier extends JFrame {
 					Object selected = comboBox.getSelectedItem();
 					String memID = txtMember.getText();
 					if(selected.equals("CASH")){
+						if(pay<total) {
+							JOptionPane.showMessageDialog(null, "Insufficient Cash Payment Amount", "Error! - PiKA POS", JOptionPane.ERROR_MESSAGE);
+			    	    	return;
+						}
 						trx = DBConn.isMember(memID) ? new Transaction(trxID, cashier) : new Transaction(trxID, cashier, memID);
 					}else{
 						Integer boxCard = JOptionPane.showConfirmDialog(null, cardPanel(), "Enter Card Details", JOptionPane.OK_CANCEL_OPTION);
