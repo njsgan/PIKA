@@ -196,7 +196,6 @@ public class DBConn {
 		    	}
 		    	
 		    	else if(!card && member) {
-		    		System.out.println("hit");
 		    		st.executeUpdate("INSERT INTO transactions (trxID, itemID, itemQTY, itemPRICE, sales, member) VALUES "
 			    			+ "('"+transaction.getId()+"','"+itemIDs+"','"+itemQTYs+"','"+itemPRICEs+"','"+transaction.getCashier().getUsername()+"','"
 					    			+transaction.getMemID()+"')");
@@ -313,10 +312,7 @@ public class DBConn {
 		    while(rs.next()) {
 		    	oldPoint = rs.getInt("point");
 		    }
-		    System.out.println(oldPoint);
-		    System.out.println(point);
 		    point+=oldPoint;
-		    System.out.println(oldPoint);
 		    st.executeUpdate("UPDATE member set point = '"+point+"' WHERE UID = '"+UID+"'");
 		    
 		    
