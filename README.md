@@ -25,3 +25,8 @@ Kami membuat PiKA untuk memenuhi tugas kami dalam Mata Kuliah COMP6175 - Object 
 ## Class Diagram
 ![Class Diagram](ClassDiagram-PiKA.png)
 
+## Changing Database
+	* in src/dataConnector/DBConn.java :
+		1. myUrl --> database url
+		2. user  --> database account username
+		3. pass  --> database account password
