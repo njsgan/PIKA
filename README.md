@@ -3,18 +3,18 @@
 </p>
 <br/>
 
-# PiKA <i>[aPlikasI KAsir]</i>
+#PiKA <i>[aPlikasI KAsir]</i>
 
 ## Mengapa PiKA?
 <br/>
 Kami membuat PiKA untuk memenuhi tugas kami dalam Mata Kuliah COMP6175 - Object Oriented Programming, yang mengharuskan membuat project berupa game atau aplikasi yang menerapkan prinsip Object Oriented Programming.
 
 ## Guide
-	1. Install XAMPP<br/>
-	2. Run XAMPP<br/>
-	3. Start <b>Apache</b> dan <b>MySQL</b><br/>
-	4. Create table bernama pikapos<br/>
-	5. Import <b>pikapos.sql</b><br/>
+	1. Install XAMPP
+	2. Run XAMPP
+	3. Start Apache dan MySQL
+	4. Create table bernama pikapos
+	5. Import pikapos.sql
 
 ## Team Member
 	* natashawjy (Natasha Wijaya)
