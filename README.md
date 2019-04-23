@@ -13,7 +13,7 @@ Kami membuat PiKA untuk memenuhi tugas kami dalam Mata Kuliah COMP6175 - Object 
 	1. Install XAMPP
 	2. Run XAMPP
 	3. Start Apache dan MySQL
-	4. Create table bernama pikapos
+	4. Create database bernama pikapos
 	5. Import pikapos.sql
 
 ## Team Member
@@ -23,3 +23,4 @@ Kami membuat PiKA untuk memenuhi tugas kami dalam Mata Kuliah COMP6175 - Object 
 
 ## Class Diagram
 ![Class Diagram](ClassDiagram-PiKA.png)
+
