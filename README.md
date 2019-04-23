@@ -3,7 +3,7 @@
 </p>
 <br/>
 
-#PiKA <i>[aPlikasI KAsir]</i>
+# PiKA <i>[aPlikasI KAsir]</i>
 
 ## Mengapa PiKA?
 <br/>
